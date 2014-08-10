@@ -2,9 +2,9 @@
   "name": "japanese-wrap",
   "main": "./lib/japanese-wrap",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "Word wrap for Japanese text",
   "activationEvents": ["japanese-wrap:toggle"],
-  "repository": "https://github.com/atom/japanese-wrap",
+  "repository": "https://github.com/raccy/japanese-wrap",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
