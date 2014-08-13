@@ -71,41 +71,60 @@ class JapaneseWrapManager
         @iterationMarkChar.source + "|" +
         @prolongedSoundMarkChar.source + "|" +
         @smallKanaChar.source + "|" +
-        @lowSurrogateChar.soruce
+        @lowSurrogateChar.source
     )
     # Characters Not Ending a Line and High Surrogate
     @notEndingChar = new RegExp(
-        @openingBracketChar.source + "|"
-        @highSurrogateChar.soruce
+        @openingBracketChar.source + "|" +
+        @highSurrogateChar.source
     )
 
     # Character Width
     @zeroWidthChar = /[\u200B-\u200F\uDC00-\uDFFF\uFEFF]/
-    @halfWidthChar = /[\u0000-\u036F\u2000-\u2000A\uD800-\uD83F\uFF61-\uFFDC]/
+    @halfWidthChar = /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F\uFF61-\uFFDC]/
     # @fullWidthChar = /[^\u0000-\u036F\uFF61-\uFFDC]/
 
-    @softWrap = true
+  # overwrite Display#findWrapColumn()
+  overwriteFindWrapColumn: (displayBuffer) ->
+    unless displayBuffer.japaneseWrapManager?
+      displayBuffer.japaneseWrapManager = @
 
-  getSoftWrapColumn: () ->
-    # TODO
-    return 80
+    unless displayBuffer.originalFindWrapColumn?
+      displayBuffer.originalFindWrapColumn = displayBuffer.findWrapColumn
 
-  findWrapColumn: (line, sotfWrapColumn = @getSoftWrapColumn()) ->
-    return unless @softWrap
+    displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
+      return unless @softWrap
+      return @japaneseWrapManager.findJapaneseWrapColumn(line, softWrapColumn)
+
+  # restore Display#findWrapColumn()
+  restoreFindWrapColumn: (displayBuffer) ->
+    if displayBuffer.originalFindWrapColumn?
+      displayBuffer.findWrapColumn = displayBuffer.originalFindWrapColumn
+      displayBuffer.originalFindWrapColumn = undefined
+
+    if displayBuffer.japaneseWrapManager?
+      displayBuffer.japaneseWrapManager = undefined
+
+  # Japanese Wrap Column
+  findJapaneseWrapColumn: (line, sotfWrapColumn) ->
+    # If all characters are full width, the width is twice the length.
     return unless (line.length * 2) > sotfWrapColumn
     size = 0
     for wrapColumn in [0...line.length]
       if @zeroWidthChar.test(line[wrapColumn])
-        # do nothing
+        continue
       else if @halfWidthChar.test(line[wrapColumn])
         size = size + 1
       else
         size = size + 2
 
       if size > sotfWrapColumn
-        # TODO: 行末禁則が未実装
-
-        if @whitespaceChar.test(line[wrapColumn])
+        if @notEndingChar.test(line[wrapColumn - 1])
+          # search backward for the not ending character
+          for column in [(wrapColumn - 1)...0]
+            return column unless @notEndingChar.test(line[column - 1])
+          return wrapColumn
+        else if @whitespaceChar.test(line[wrapColumn])
           # search forward for the start of a word past the boundary
           for column in [wrapColumn...line.length]
             return column unless @whitespaceChar.test(line[column])
@@ -117,7 +136,7 @@ class JapaneseWrapManager
           return wrapColumn
         else if @notStartingChar.test(line[wrapColumn])
           # Character Not Starting a Line
-          for column in [wrapColumn..0]
+          for column in [wrapColumn...0]
             return column unless @notStartingChar.test(line[column])
           return wrapColumn
         else

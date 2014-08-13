@@ -1,13 +1,17 @@
-JapaneseWrapView = require './japanese-wrap-view'
+JapaneseWrapManager = require './japanese-wrap-manager'
 
 module.exports =
-  japaneseWrapView: null
+  japaneseWrapManager: null
 
   activate: (state) ->
-    @japaneseWrapView = new JapaneseWrapView(state.japaneseWrapViewState)
+    @japaneseWrapManager = new JapaneseWrapManager
+    japaneseWrapManager = @japaneseWrapManager
+    atom.workspaceView.eachEditorView (editorView) ->
+      editor = editorView.getEditor()
+      japaneseWrapManager.overwriteFindWrapColumn(editor.displayBuffer)
 
   deactivate: ->
-    @japaneseWrapView.destroy()
-
-  serialize: ->
-    japaneseWrapViewState: @japaneseWrapView.serialize()
+    japaneseWrapManager = @japaneseWrapManager
+    atom.workspaceView.eachEditorView (editorView) ->
+      editor = editorView.getEditor()
+      japaneseWrapManager.restoreFindWrapColumn(editor.displayBuffer)
