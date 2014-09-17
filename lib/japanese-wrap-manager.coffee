@@ -93,7 +93,7 @@ class JapaneseWrapManager
       displayBuffer.originalFindWrapColumn = displayBuffer.findWrapColumn
 
     displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
-      return unless @softWrap
+      return unless @isSoftWrapped()
       return @japaneseWrapManager.findJapaneseWrapColumn(line, softWrapColumn)
 
   # restore Display#findWrapColumn()
