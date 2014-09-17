@@ -27,6 +27,8 @@ The following text is written in Japanese, because this package is made for Japa
 ## ！！動きません！！という方は
 Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。このパッケージはv0.129.0で確認しましたので、最低そこまではアップデートしてください。
 
+v0.129.0にはSoftWrappedの設定を使っているのにSoftWrapが設定に無いというバグがあります。どっちかがtrueならラップするようにしました。
+
 ## 動作仕様
 ### 英文(ASCII文字)のみの場合でも異なる動作
 下記の点が標準のSoft Wrapと異なります。
