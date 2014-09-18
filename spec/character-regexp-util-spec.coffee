@@ -65,3 +65,35 @@ describe "CharacterRegexpUtil", ->
           toEqual(/[abc]/)
       expect(CharacterRegexpUtil.combineRegexp(/[\u0020-\u0040]/, /[a-c]/, /[あ]/)).
           toEqual(/[\u0020-\u0040a-cあ]/)
+  describe "CharacterRegexpUtil.code2uchar()", ->
+    it "code < 0x1000", ->
+      expect(CharacterRegexpUtil.code2uchar(0x2)).
+          toEqual("\\u0002")
+      expect(CharacterRegexpUtil.code2uchar(0x20)).
+          toEqual("\\u0020")
+      expect(CharacterRegexpUtil.code2uchar(0x200)).
+          toEqual("\\u0200")
+      expect(CharacterRegexpUtil.code2uchar(0x2000)).
+          toEqual("\\u2000")
+    it "code >= 0x1000", ->
+      expect(CharacterRegexpUtil.code2uchar(0x10000)).
+          toEqual("\\uD800")
+      expect(CharacterRegexpUtil.code2uchar(0x10001)).
+          toEqual("\\uD800")
+      expect(CharacterRegexpUtil.code2uchar(0x10399)).
+          toEqual("\\uD800")
+      expect(CharacterRegexpUtil.code2uchar(0x10400)).
+          toEqual("\\uD801")
+      expect(CharacterRegexpUtil.code2uchar(0x12000)).
+          toEqual("\\uD808")
+      expect(CharacterRegexpUtil.code2uchar(0x102000)).
+          toEqual("\\uDBC8")
+      expect(CharacterRegexpUtil.code2uchar(0x10FFFF)).
+          toEqual("\\uDBFF")
+    it "no code", ->
+      expect(CharacterRegexpUtil.code2uchar(NaN)).
+          toEqual("")
+      expect(CharacterRegexpUtil.code2uchar(-1)).
+          toEqual("")
+      expect(CharacterRegexpUtil.code2uchar(0x110000)).
+          toEqual("")

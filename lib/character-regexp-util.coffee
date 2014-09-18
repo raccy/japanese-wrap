@@ -38,7 +38,9 @@ class CharaterRegexpUtil
       # do nothing
     else if code < 0x110000
       # only High Surrogate
-      code = (code - 0x10000) / 0x400 + 0xD800
+      # Math.log2(0x400) == 10 -> true
+      # (x >> 10) == (x - x % 0x400) / 0x400 -> true
+      code = ((code - 0x10000) >> 10) + 0xD800
     else
       # no Unicode code
       return ""
