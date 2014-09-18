@@ -52,3 +52,16 @@ describe "CharacterRegexpUtil", ->
           toEqual(/[ab]/)
       expect(CharacterRegexpUtil.string2regexp("\\u0020-\\u0040", "a-c", "あ")).
           toEqual(/[\u0020-\u0040a-cあ]/)
+  describe "CharacterRegexpUtil.combineRegexp()", ->
+    it "single", ->
+      expect(CharacterRegexpUtil.combineRegexp(/あ/)).
+          toEqual(/[あ]/)
+      expect(CharacterRegexpUtil.combineRegexp(/[あア亜]/)).
+          toEqual(/[あア亜]/)
+      expect(CharacterRegexpUtil.combineRegexp(/[\u0020-\u0040]/)).
+          toEqual(/[\u0020-\u0040]/)
+    it "multi", ->
+      expect(CharacterRegexpUtil.combineRegexp(/a/, /[bc]/)).
+          toEqual(/[abc]/)
+      expect(CharacterRegexpUtil.combineRegexp(/[\u0020-\u0040]/, /[a-c]/, /[あ]/)).
+          toEqual(/[\u0020-\u0040a-cあ]/)

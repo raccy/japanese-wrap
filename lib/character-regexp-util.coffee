@@ -8,7 +8,7 @@ class CharaterRegexpUtil
       str = regexp.source
       if str.length == 0
         continue
-      if str.startWith("[") and str.endWith("]")
+      if str.startsWith("[") and str.endsWith("]")
         regexpString += str.substr(1, str.length - 2)
       else
         regexpString += str
@@ -51,7 +51,11 @@ class CharaterRegexpUtil
   @range2string: (range) ->
     firstCode = range[0]
     lastCode = range[range.length - 1]
-    return @code2uchar(firstCode) + "-" + @code2uchar(lastCode)
+    if lastCode < 0x10000 || firstCode >= 0x10000
+      return @code2uchar(firstCode) + "-" + @code2uchar(lastCode)
+    else
+      return @code2uchar(firstCode) + "-" + @code2uchar(0xFFFF) +
+        @code2uchar(0x10000) + "-" + @code2uchar(lastCode)
 
   @range2regexp: (range) ->
     return @string2regexp(@range2string(range))
