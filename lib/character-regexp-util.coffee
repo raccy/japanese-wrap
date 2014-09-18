@@ -48,7 +48,7 @@ class CharaterRegexpUtil
     return str
 
   @char2uchar: (char) ->
-    return @code2uchar(char.codeCodeAt(0))
+    return @code2uchar(char.charCodeAt(0))
 
   @range2string: (range) ->
     firstCode = range[0]

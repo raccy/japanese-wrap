@@ -97,3 +97,14 @@ describe "CharacterRegexpUtil", ->
           toEqual("")
       expect(CharacterRegexpUtil.code2uchar(0x110000)).
           toEqual("")
+  describe "CharacterRegexpUtil.char2uchar()", ->
+    it "code < 0x1000", ->
+      expect(CharacterRegexpUtil.char2uchar(" ")).
+          toEqual("\\u0020")
+      expect(CharacterRegexpUtil.char2uchar("あ")).
+          toEqual("\\u3042")
+      expect(CharacterRegexpUtil.char2uchar("ｱ")).
+          toEqual("\\uFF71")
+    it "code >= 0x1000", ->
+      expect(CharacterRegexpUtil.char2uchar("𠮷")).
+          toEqual("\\uD842")
