@@ -60,7 +60,7 @@ class JapaneseWrapManager
     @westernChar = /[\u0021-\u007E\u00A0-\u1FFF]/
 
     # Characters Not Starting a Line and Low Surrogate
-    @notStartingChar = new RegExp(
+    @notStartingCharRexgexp = new RegExp(
         @closingBracketChar.source + "|"  +
         @hyphenChar.source + "|" +
         @dividingPunctuationChar.source + "|" +
@@ -73,14 +73,14 @@ class JapaneseWrapManager
         @lowSurrogateChar.source
     )
     # Characters Not Ending a Line and High Surrogate
-    @notEndingChar = new RegExp(
+    @notEndingCharRegexp = new RegExp(
         @openingBracketChar.source + "|" +
         @highSurrogateChar.source
     )
 
     # Character Width
-    @zeroWidthChar = /[\u200B-\u200F\uDC00-\uDFFF\uFEFF]/
-    @halfWidthChar = /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F\uFF61-\uFFDC]/
+    @zeroWidthCharRegexp = /[\u200B-\u200F\uDC00-\uDFFF\uFEFF]/
+    @halfWidthCharRegexp = /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F\uFF61-\uFFDC]/
     # @fullWidthChar = /[^\u0000-\u036F\uFF61-\uFFDC]/
 
   # overwrite Display#findWrapColumn()
@@ -115,18 +115,18 @@ class JapaneseWrapManager
     return unless (line.length * 2) > sotfWrapColumn
     size = 0
     for wrapColumn in [0...line.length]
-      if @zeroWidthChar.test(line[wrapColumn])
+      if @zeroWidthCharRegexp.test(line[wrapColumn])
         continue
-      else if @halfWidthChar.test(line[wrapColumn])
+      else if @halfWidthCharRegexp.test(line[wrapColumn])
         size = size + 1
       else
         size = size + 2
 
       if size > sotfWrapColumn
-        if @notEndingChar.test(line[wrapColumn - 1])
+        if @notEndingCharRegexp.test(line[wrapColumn - 1])
           # search backward for the not ending character
           for column in [(wrapColumn - 1)...0]
-            return column unless @notEndingChar.test(line[column - 1])
+            return column unless @notEndingCharRegexp.test(line[column - 1])
           return wrapColumn
         else if @whitespaceChar.test(line[wrapColumn])
           # search forward for the start of a word past the boundary
@@ -138,10 +138,10 @@ class JapaneseWrapManager
           for column in [wrapColumn..0]
             return column + 1 unless @westernChar.test(line[column])
           return wrapColumn
-        else if @notStartingChar.test(line[wrapColumn])
+        else if @notStartingCharRexgexp.test(line[wrapColumn])
           # Character Not Starting a Line
           for column in [wrapColumn...0]
-            return column unless @notStartingChar.test(line[column])
+            return column unless @notStartingCharRexgexp.test(line[column])
           return wrapColumn
         else
           return wrapColumn
