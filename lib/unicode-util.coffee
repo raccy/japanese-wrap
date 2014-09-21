@@ -1,6 +1,6 @@
 module.exports =
 class UnicodeUtil
-  @unicode = require('./unicode.coffee')
+  @unicode = require('./unicode')
 
   # Surrogate Charracter Range
   @highSurrogateRange = [0xD800..0xDBFF]

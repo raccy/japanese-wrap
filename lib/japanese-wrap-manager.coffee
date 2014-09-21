@@ -1,5 +1,10 @@
+UnicodeUtil = require "./unicode-util"
+CharacterRegexpUtil = require "./character-regexp-util"
+
 module.exports =
 class JapaneseWrapManager
+  @characterClasses = require "./character-classes"
+
   constructor: ->
     # Surrogate
     # High U+D800 - U+DBFF
@@ -60,23 +65,22 @@ class JapaneseWrapManager
     @westernChar = /[\u0021-\u007E\u00A0-\u1FFF]/
 
     # Characters Not Starting a Line and Low Surrogate
-    @notStartingCharRexgexp = new RegExp(
-        @closingBracketChar.source + "|"  +
-        @hyphenChar.source + "|" +
-        @dividingPunctuationChar.source + "|" +
-        @middleDotChar.source + "|" +
-        @fullStopChar.source + "|" +
-        @commaChar.source + "|" +
-        @iterationMarkChar.source + "|" +
-        @prolongedSoundMarkChar.source + "|" +
-        @smallKanaChar.source + "|" +
-        @lowSurrogateChar.source
-    )
+    @notStartingCharRexgexp = CharacterRegexpUtil.string2regexp(
+        JapaneseWrapManager.characterClasses["Closing brackets"],
+        JapaneseWrapManager.characterClasses["Hyphens"],
+        JapaneseWrapManager.characterClasses["Dividing punctuation marks"],
+        JapaneseWrapManager.characterClasses["Middle dots"],
+        JapaneseWrapManager.characterClasses["Full stops"],
+        JapaneseWrapManager.characterClasses["Commas"],
+        JapaneseWrapManager.characterClasses["Iteration marks"],
+        JapaneseWrapManager.characterClasses["Prolonged sound mark"],
+        JapaneseWrapManager.characterClasses["Small kana"],
+        CharacterRegexpUtil.range2string(UnicodeUtil.lowSurrogateRange))
+
     # Characters Not Ending a Line and High Surrogate
-    @notEndingCharRegexp = new RegExp(
-        @openingBracketChar.source + "|" +
-        @highSurrogateChar.source
-    )
+    @notEndingCharRegexp = CharacterRegexpUtil.string2regexp(
+        JapaneseWrapManager.characterClasses["Opening brackets"],
+        CharacterRegexpUtil.range2string(UnicodeUtil.highSurrogateRange))
 
     # Character Width
     @zeroWidthCharRegexp = /[\u200B-\u200F\uDC00-\uDFFF\uFEFF]/
