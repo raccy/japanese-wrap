@@ -17,7 +17,7 @@ class JapaneseWrapManager
     @lowSurrogateChar = /[\uDC00-\uDFFF]/
 
     # Not incude '　'(U+3000)
-    @whitespaceChar = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
+    @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
     # TODO
     @unbreakbleChar = /[—…‥]/
     @europeanNumeralChar = /[\d.,]/
@@ -62,7 +62,7 @@ class JapaneseWrapManager
     # A.14 Full-width ideographic space (cl-14)
     @ideographicSpaceChar = /\u3000/ # '　'(U+3000)
     # A.27 Western characters (cl-27)
-    @westernChar = /[\u0021-\u007E\u00A0-\u1FFF]/
+    @wordCharRegexp = /[\u0021-\u007E\u00A0-\u1FFF]/
 
     # Characters Not Starting a Line and Low Surrogate
     @notStartingCharRexgexp = CharacterRegexpUtil.string2regexp(
@@ -132,15 +132,15 @@ class JapaneseWrapManager
           for column in [(wrapColumn - 1)...0]
             return column unless @notEndingCharRegexp.test(line[column - 1])
           return wrapColumn
-        else if @whitespaceChar.test(line[wrapColumn])
+        else if @whitespaceCharRegexp.test(line[wrapColumn])
           # search forward for the start of a word past the boundary
           for column in [wrapColumn...line.length]
-            return column unless @whitespaceChar.test(line[column])
+            return column unless @whitespaceCharRegexp.test(line[column])
           return line.length
-        else if @westernChar.test(line[wrapColumn])
+        else if @wordCharRegexp.test(line[wrapColumn])
           # search backward for the start of the word on the boundary
           for column in [wrapColumn..0]
-            return column + 1 unless @westernChar.test(line[column])
+            return column + 1 unless @wordCharRegexp.test(line[column])
           return wrapColumn
         else if @notStartingCharRexgexp.test(line[wrapColumn])
           # Character Not Starting a Line
