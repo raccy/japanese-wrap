@@ -6,63 +6,12 @@ class JapaneseWrapManager
   @characterClasses = require "./character-classes"
 
   constructor: ->
-    # Surrogate
-    # High U+D800 - U+DBFF
-    # Low U+DC00 - U+DFFF
-    # D800 D840 D880 D8C0 D900 D940 D980 D9C0
-    # DA00 DA40 DA80 DAC0 DB00 DB40 DB80 DBC0
-    @highSurrogateChar = /[\uD800-\uDBFF]/
-    @highSurrogateHalfWidthChar = /[\uD800-\uD83F]/ # 1xxxx
-    @highSurrogateFullWdithChar = /[\uD840-\uDBFF]/ # 2xxxx - 10xxxx
-    @lowSurrogateChar = /[\uDC00-\uDFFF]/
-
     # Not incude '　'(U+3000)
     @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
-    # TODO
-    @unbreakbleChar = /[—…‥]/
-    @europeanNumeralChar = /[\d.,]/
 
-    # W3C - Requirements for Japanese Text Layout
-    # Appendix A Character Classes
-    # http://www.w3.org/TR/jlreq/#character_classes
-
-    # A.1 Opening brackets (cl-01)
-    # Basic Latin -> Halfwidth and Fullwidth Forms
-    @openingBracketChar = /[‘“（〔［｛〈《「『【｟〘〖«〝]/
-    # A.2 Closing brackets (cl-02)
-    # Basic Latin -> Halfwidth and Fullwidth Forms
-    @closingBracketChar = /[’”）〕］｝〉》」』】｠〙〗»〟]/
-    # A.3 Hyphens (cl-03)
-    # U+2010, U+301C, U+30A0, U+2013
-    @hyphenChar = /[‐〜゠–]/
-    # A.4 Dividing punctuation marks (cl-04)
-    # Basic Latin -> Halfwidth and Fullwidth Forms
-    @dividingPunctuationChar = /[！？‼⁇⁈⁉]/
-    # A.5 Middle dots (cl-05)
-    # Basic Latin -> Halfwidth and Fullwidth Forms
-    @middleDotChar = /[・：；]/
-    # A.6 Full stops (cl-06)
-    @fullStopChar = /[。．]/
-    # A.7 Commas (cl-07)
-    @commaChar = /[、，]/
-    # A.8 Inseparable characters (cl-08)
-    # TODO: wrong rule '〳〴〵'
-    @inseparableChar = /[—…‥〳〴〵]/
-    # A.9 Iteration marks (cl-09)
-    @iterationMarkChar = /[ヽヾゝゞ々〻]/
-    # A.10 Prolonged sound mark (cl-10)
-    @prolongedSoundMarkChar = /ー/
-    # A.11 Small kana (cl-11)
-    # Not include 'ㇷ゚'(U+31F7, U+309A)
-    @smallKanaChar = /[ぁぃぅぇぉァィゥェォっゃゅょゎゕゖッャュョヮヵヶㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ]/
-    # A.12 Prefixed abbreviations (cl-12)
-    @prefAbbrChar = /[¥$£#€№]/
-    # A.13 Postfixed abbreviations (cl-13)
-    @postAbbrChar = /[°′″℃¢%‰㏋ℓ㌃㌍㌔㌘㌢㌣㌦㌧㌫㌶㌻㍉㍊㍍㍑㍗㎎㎏㎜㎝㎞㎡㏄]/
-    # A.14 Full-width ideographic space (cl-14)
-    @ideographicSpaceChar = /\u3000/ # '　'(U+3000)
-    # A.27 Western characters (cl-27)
-    @wordCharRegexp = /[\u0021-\u007E\u00A0-\u1FFF]/
+    # word charater
+    @wordCharRegexp = CharacterRegexpUtil.string2regexp(
+        JapaneseWrapManager.characterClasses["Western characters"])
 
     # Characters Not Starting a Line and Low Surrogate
     @notStartingCharRexgexp = CharacterRegexpUtil.string2regexp(
@@ -83,6 +32,7 @@ class JapaneseWrapManager
         CharacterRegexpUtil.range2string(UnicodeUtil.highSurrogateRange))
 
     # Character Width
+    # TODO: combine chars, etc...
     @zeroWidthCharRegexp = /[\u200B-\u200F\uDC00-\uDFFF\uFEFF]/
     @halfWidthCharRegexp = /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F\uFF61-\uFFDC]/
     # @fullWidthChar = /[^\u0000-\u036F\uFF61-\uFFDC]/
