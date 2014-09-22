@@ -37,6 +37,11 @@ class JapaneseWrapManager
     @halfWidthCharRegexp = /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F\uFF61-\uFFDC]/
     # @fullWidthChar = /[^\u0000-\u036F\uFF61-\uFFDC]/
 
+    # Lin Adjustment by Hanging Punctuation
+    @hangingPunctuationCharRegexp = CharacterRegexpUtil.string2regexp(
+        JapaneseWrapManager.characterClasses["Full stops"],
+        JapaneseWrapManager.characterClasses["Commas"])
+
   # overwrite Display#findWrapColumn()
   overwriteFindWrapColumn: (displayBuffer) ->
     unless displayBuffer.japaneseWrapManager?
