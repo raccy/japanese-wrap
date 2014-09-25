@@ -89,20 +89,11 @@ class JapaneseWrapManager
         else
           return column
 
-        # TODO: change to call searchBackwardCutableColumn
-        return @searchBackwardCutableColumn(line, wrapColumn, cutable, @wordCharRegexp.test(line[wrapColumn]))
-        #if @wordCharRegexp.test(line[wrapColumn])
-        #  # search backward for the start of the word on the boundary
-        #  for column in [wrapColumn..0]
-        #    return column + 1 unless @wordCharRegexp.test(line[column])
-        #  return wrapColumn
-        #else if @notStartingCharRexgep.test(line[wrapColumn])
-        #  # Character Not Starting a Line
-        #  for column in [wrapColumn...0]
-        #    return column unless @notStartingCharRexgep.test(line[column])
-        #  return wrapColumn
-        #else
-        #  return wrapColumn
+        return @searchBackwardCutableColumn(
+            line,
+            wrapColumn,
+            cutable,
+            @wordCharRegexp.test(line[wrapColumn]))
     return
 
   searchBackwardNotEndingColumn: (line, wrapColumn) ->
@@ -125,9 +116,6 @@ class JapaneseWrapManager
           return column
     return line.length
 
-  # TODO ...
-  # まえがx
-  # まえがok
   searchBackwardCutableColumn: (line, wrapColumn, cutable, preWord) ->
     for column in [(wrapColumn - 1)..0]
       if @whitespaceCharRegexp.test(line[column])
