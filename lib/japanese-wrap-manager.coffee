@@ -53,7 +53,7 @@ class JapaneseWrapManager
     displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
       return unless @isSoftWrapped()
       # If all characters are full width, the width is twice the length.
-      return unless (line.length * 2) > sotfWrapColumn
+      return unless (line.length * 2) > softWrapColumn
       return @japaneseWrapManager.findJapaneseWrapColumn(line, softWrapColumn)
 
   # restore Display#findWrapColumn()
@@ -66,7 +66,7 @@ class JapaneseWrapManager
       displayBuffer.japaneseWrapManager = undefined
 
   # Japanese Wrap Column
-  findJapaneseWrapColumn: (line, sotfWrapColumn) ->
+  findJapaneseWrapColumn: (line, softWrapColumn) ->
     size = 0
     for wrapColumn in [0...line.length]
       if @zeroWidthCharRegexp.test(line[wrapColumn])
@@ -76,16 +76,21 @@ class JapaneseWrapManager
       else
         size = size + 2
 
-      if size > sotfWrapColumn
+      if size > softWrapColumn
         column = @searchBackwardNotEndingColumn(line, wrapColumn)
         if column?
           return column
 
         column = @searchForwardWhitespaceCutableColumn(line, wrapColumn)
-        if column? and column != wrapColumn
+        if not column?
+          cutable = false
+        else if column == wrapColumn
+          cutable = true
+        else
           return column
 
         # TODO: change to call searchBackwardCutableColumn
+        # return @searchBackwardCutableColumn(line, wrapColumn, cutable, @wordCharRegexp.test(line[wrapColumn]))
         if @wordCharRegexp.test(line[wrapColumn])
           # search backward for the start of the word on the boundary
           for column in [wrapColumn..0]
@@ -121,33 +126,35 @@ class JapaneseWrapManager
     return line.length
 
   # TODO ...
-  searchBackwardCutableColumn: (line, wrapColumn, cutable = true) ->
-    for column in [(wrapColumn)..0]
+  # まえがx
+  # まえがok
+  searchBackwardCutableColumn: (line, wrapColumn, cutable, preWord) ->
+    for column in [(wrapColumn - 1)..0]
       if @whitespaceCharRegexp.test(line[column])
-        if cutable
-          continue
+        if cutable or preWord
+          preColumn = @searchBackwardNotEndingColumn(line, column)
+          if preColumn?
+            preColumn
+          else
+            return column + 1
       else if @wordCharRegexp.test(line[wrapColumn])
-        #if preWord
-        #  continue
-        #else if
-        return
-        #if @wordCharRegexp.test(line[wrapColumn])
-        #for column in [wrapColumn..0]
-        #  return column + 1 unless @wordCharRegexp.test(line[column])
-        #return wrapColumn
+        if (! preWord) and cutable
+          return column + 1
+        else
+          preWord = true
       else if @notEndingCharRegexp.text(line[wrapColumn])
+        cutable = true
+        preWord = false
       else if @notStartingCharRexgep.test(line[wrapColumn])
-        # Character Not Starting a Line
-        for column in [wrapColumn...0]
-          return column unless @notStartingCharRexgep.test(line[column])
-        return wrapColumn
+        if cutable or preWord
+          return column + 1
+        else
+          cutable = false
+          preWord = false
       else
-        return wrapColumn
-
-      if @notStartingCharRegexp.test(line[column])
-        foundNotStartingColumn = column
-      else if foundNotStartingColumn? and @notEndingCharRegexp.test(line[column])
-        return @searchBackwardNotEndingColumn(line, column + 1)
-      else
-        return column
-    return
+        if cutable or preWord
+          return column + 1
+        else
+          cutable = true
+          preWord = false
+    return wrapColumn
