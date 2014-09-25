@@ -90,19 +90,19 @@ class JapaneseWrapManager
           return column
 
         # TODO: change to call searchBackwardCutableColumn
-        # return @searchBackwardCutableColumn(line, wrapColumn, cutable, @wordCharRegexp.test(line[wrapColumn]))
-        if @wordCharRegexp.test(line[wrapColumn])
-          # search backward for the start of the word on the boundary
-          for column in [wrapColumn..0]
-            return column + 1 unless @wordCharRegexp.test(line[column])
-          return wrapColumn
-        else if @notStartingCharRexgep.test(line[wrapColumn])
-          # Character Not Starting a Line
-          for column in [wrapColumn...0]
-            return column unless @notStartingCharRexgep.test(line[column])
-          return wrapColumn
-        else
-          return wrapColumn
+        return @searchBackwardCutableColumn(line, wrapColumn, cutable, @wordCharRegexp.test(line[wrapColumn]))
+        #if @wordCharRegexp.test(line[wrapColumn])
+        #  # search backward for the start of the word on the boundary
+        #  for column in [wrapColumn..0]
+        #    return column + 1 unless @wordCharRegexp.test(line[column])
+        #  return wrapColumn
+        #else if @notStartingCharRexgep.test(line[wrapColumn])
+        #  # Character Not Starting a Line
+        #  for column in [wrapColumn...0]
+        #    return column unless @notStartingCharRexgep.test(line[column])
+        #  return wrapColumn
+        #else
+        #  return wrapColumn
     return
 
   searchBackwardNotEndingColumn: (line, wrapColumn) ->
@@ -137,15 +137,15 @@ class JapaneseWrapManager
             preColumn
           else
             return column + 1
-      else if @wordCharRegexp.test(line[wrapColumn])
+      else if @wordCharRegexp.test(line[column])
         if (! preWord) and cutable
           return column + 1
         else
           preWord = true
-      else if @notEndingCharRegexp.text(line[wrapColumn])
+      else if @notEndingCharRegexp.test(line[column])
         cutable = true
         preWord = false
-      else if @notStartingCharRexgep.test(line[wrapColumn])
+      else if @notStartingCharRexgep.test(line[column])
         if cutable or preWord
           return column + 1
         else
