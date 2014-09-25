@@ -115,3 +115,104 @@ describe "JapaneseWrapManager", ->
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+    it "複雑な組み合わせ", ->
+      text = "前文  」空白の後の行頭禁止"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(6) # 前文  」空
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(6)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(7)
+
+      text = "前文「  行末禁止の後の空白"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2) # 前文
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(6) # 前文「  行
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(6)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(7)
+
+      text = "前文「    」囲まれた空白"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2) # 前文
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(7) # 前文「    」
+
+      text = "前文「word」囲まれた単語"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2) # 前文
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(7) # 前文「word」
+
+      text = "前文「「「「括弧の連続"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2) # 前文
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 13)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 14)).toEqual(7) # 前文「「「「括
+      expect(jwm.findJapaneseWrapColumn(text, 15)).toEqual(7) # 前文「「「「括
+
+      text = "前文」」」」括弧の連続"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2) # 前文
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(4) # 前文「」
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6) # 前文」」」」
+      expect(jwm.findJapaneseWrapColumn(text, 13)).toEqual(6)
+      expect(jwm.findJapaneseWrapColumn(text, 14)).toEqual(7) # 前文「「「「括
+      expect(jwm.findJapaneseWrapColumn(text, 15)).toEqual(7)
+
+      text = "前文「」「」括弧の連続"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1) # 前
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2) # 前文
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 7)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(4) # 前文「」
+      expect(jwm.findJapaneseWrapColumn(text, 9)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6) # 前文「」「」
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6)
+      expect(jwm.findJapaneseWrapColumn(text, 14)).toEqual(7) # 前文「」「」括
+      expect(jwm.findJapaneseWrapColumn(text, 15)).toEqual(7) # 前文「」「」括

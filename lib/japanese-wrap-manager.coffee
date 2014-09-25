@@ -14,7 +14,7 @@ class JapaneseWrapManager
         JapaneseWrapManager.characterClasses["Western characters"])
 
     # Characters Not Starting a Line and Low Surrogate
-    @notStartingCharRexgexp = CharacterRegexpUtil.string2regexp(
+    @notStartingCharRexgep = CharacterRegexpUtil.string2regexp(
         JapaneseWrapManager.characterClasses["Closing brackets"],
         JapaneseWrapManager.characterClasses["Hyphens"],
         JapaneseWrapManager.characterClasses["Dividing punctuation marks"],
@@ -82,26 +82,77 @@ class JapaneseWrapManager
         size = size + 2
 
       if size > sotfWrapColumn
-        if @notEndingCharRegexp.test(line[wrapColumn - 1])
-          # search backward for the not ending character
-          for column in [(wrapColumn - 1)...0]
-            return column unless @notEndingCharRegexp.test(line[column - 1])
-          return wrapColumn
-        else if @whitespaceCharRegexp.test(line[wrapColumn])
-          # search forward for the start of a word past the boundary
-          for column in [wrapColumn...line.length]
-            return column unless @whitespaceCharRegexp.test(line[column])
-          return line.length
-        else if @wordCharRegexp.test(line[wrapColumn])
+        column = @searchBackwardNotEndingColumn(line, wrapColumn)
+        if column?
+          return column
+
+        column = @searchForwardWhitespaceCutableColumn(line, wrapColumn)
+        if column? and column != wrapColumn
+          return column
+
+        # TODO: change to call searchBackwardCutableColumn
+        if @wordCharRegexp.test(line[wrapColumn])
           # search backward for the start of the word on the boundary
           for column in [wrapColumn..0]
             return column + 1 unless @wordCharRegexp.test(line[column])
           return wrapColumn
-        else if @notStartingCharRexgexp.test(line[wrapColumn])
+        else if @notStartingCharRexgep.test(line[wrapColumn])
           # Character Not Starting a Line
           for column in [wrapColumn...0]
-            return column unless @notStartingCharRexgexp.test(line[column])
+            return column unless @notStartingCharRexgep.test(line[column])
           return wrapColumn
         else
           return wrapColumn
+    return
+
+  searchBackwardNotEndingColumn: (line, wrapColumn) ->
+    foundNotEndingColumn = null
+    for column in [(wrapColumn - 1)..0]
+      if @whitespaceCharRegexp.test(line[column])
+        continue
+      else if @notEndingCharRegexp.test(line[column])
+        foundNotEndingColumn = column
+      else
+        return foundNotEndingColumn
+    return
+
+  searchForwardWhitespaceCutableColumn: (line, wrapColumn) ->
+    for column in [wrapColumn...line.length]
+      unless @whitespaceCharRegexp.test(line[column])
+        if @notStartingCharRexgep.test(line[column])
+          return null
+        else
+          return column
+    return line.length
+
+  # TODO ...
+  searchBackwardCutableColumn: (line, wrapColumn, cutable = true) ->
+    for column in [(wrapColumn)..0]
+      if @whitespaceCharRegexp.test(line[column])
+        if cutable
+          continue
+      else if @wordCharRegexp.test(line[wrapColumn])
+        #if preWord
+        #  continue
+        #else if
+        return
+        #if @wordCharRegexp.test(line[wrapColumn])
+        #for column in [wrapColumn..0]
+        #  return column + 1 unless @wordCharRegexp.test(line[column])
+        #return wrapColumn
+      else if @notEndingCharRegexp.text(line[wrapColumn])
+      else if @notStartingCharRexgep.test(line[wrapColumn])
+        # Character Not Starting a Line
+        for column in [wrapColumn...0]
+          return column unless @notStartingCharRexgep.test(line[column])
+        return wrapColumn
+      else
+        return wrapColumn
+
+      if @notStartingCharRegexp.test(line[column])
+        foundNotStartingColumn = column
+      else if foundNotStartingColumn? and @notEndingCharRegexp.test(line[column])
+        return @searchBackwardNotEndingColumn(line, column + 1)
+      else
+        return column
     return
