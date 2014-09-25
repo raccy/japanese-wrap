@@ -25,10 +25,8 @@ The following text is written in Japanese, because this package is made for Japa
 なお、標準のSoft Wrapが無効の場合は、ラップ機能は動作しません。
 
 ## ！！動きません！！という方は
-Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。このパッケージはv0.129.0で確認しましたので、最低そこまではアップデートしてください。
+本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。このパッケージはv0.131.0で確認しましたので、最低そこまではアップデートしてください。
 
-v0.129.0にはSoftWrappedの設定を使っているのにSoftWrapが設定に無いというバグがあります。どっちかがtrueならラップするようにしました。
-
-その他の情報はgithub内のWikiを参照してください。
+その他の情報はgithub内の下記Wikiを参照してください。
 
 https://github.com/raccy/japanese-wrap/wiki
