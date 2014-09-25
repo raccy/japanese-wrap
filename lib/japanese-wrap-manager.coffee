@@ -50,11 +50,6 @@ class JapaneseWrapManager
     unless displayBuffer.originalFindWrapColumn?
       displayBuffer.originalFindWrapColumn = displayBuffer.findWrapColumn
 
-    if displayBuffer.softWrap? || displayBuffer.softWrapped?
-      displayBuffer.softWrapped = true
-    else
-      displayBuffer.softWrapped = false
-
     displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
       return unless @isSoftWrapped()
       return @japaneseWrapManager.findJapaneseWrapColumn(line, softWrapColumn)
