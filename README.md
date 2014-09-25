@@ -21,11 +21,10 @@ The following text is written in Japanese, because this package is made for Japa
 2. パッケージをインストールします。
 3. Atomの表示を再読み込みします。うまく反映されない場合は再起動してみてください。
 
-無効にする場合は、パッケージをDisabledにするか、Uninstallしてください。
-なお、標準のSoft Wrapが無効の場合は、ラップ機能は動作しません。
+無効にする場合は、パッケージをDisabledにするか、Uninstallしてください。なお、標準のSoft Wrapが無効の場合は、ラップ機能は動作しません。
 
 ## ！！動きません！！という方は
-本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。このパッケージはv0.131.0で確認しましたので、最低そこまではアップデートしてください。
+本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。現バージョン(v0.2.0)はv0.131.0で確認しています。最低そこまではアップデートしてみてください。
 
 その他の情報はgithub内の下記Wikiを参照してください。
 
