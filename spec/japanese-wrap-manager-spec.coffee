@@ -222,3 +222,25 @@ describe "JapaneseWrapManager", ->
       expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6)
       expect(jwm.findJapaneseWrapColumn(text, 14)).toEqual(7) # 前文「」「」括
       expect(jwm.findJapaneseWrapColumn(text, 15)).toEqual(7) # 前文「」「」括
+
+    it "強制切断", ->
+      text = "abcdefghijklmnopqrstvwxyz0123456789"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(6)
+
+      text = "「「「「「「「「「「「「「「「「「「"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(3)
+
+      text = "」」」」」」」」」」」」」」」」」」」"
+      expect(jwm.findJapaneseWrapColumn(text, 2)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 3)).toEqual(1)
+      expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(3)
