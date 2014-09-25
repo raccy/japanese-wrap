@@ -52,6 +52,8 @@ class JapaneseWrapManager
 
     displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
       return unless @isSoftWrapped()
+      # If all characters are full width, the width is twice the length.
+      return unless (line.length * 2) > sotfWrapColumn
       return @japaneseWrapManager.findJapaneseWrapColumn(line, softWrapColumn)
 
   # restore Display#findWrapColumn()
@@ -65,8 +67,6 @@ class JapaneseWrapManager
 
   # Japanese Wrap Column
   findJapaneseWrapColumn: (line, sotfWrapColumn) ->
-    # If all characters are full width, the width is twice the length.
-    return unless (line.length * 2) > sotfWrapColumn
     size = 0
     for wrapColumn in [0...line.length]
       if @zeroWidthCharRegexp.test(line[wrapColumn])
