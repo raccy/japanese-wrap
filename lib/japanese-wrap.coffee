@@ -11,12 +11,12 @@ module.exports =
   #    '半角ピリオド/コンマ': false
   #  '文字幅':
   #    'ギリシャ文字及びコプト文字': 2
-  #    'キリル文字': 2
+  #    'キリル文字を': 2
   #  '禁則処理':
   #    'ASCII文字を含める': false
   #    '半角カタカナ(JIS X 0201 片仮名図形文字集合)を含める': true
   #  '空白文字':
-  #    '和文間隔(U+3000)を含める': false
+  #    '和文間隔(U+3000)を空白文字に含める': false
 
   activate: (state) ->
     @japaneseWrapManager = new JapaneseWrapManager
