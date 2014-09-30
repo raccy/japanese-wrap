@@ -7,13 +7,7 @@ class UnicodeUtil
   @lowSurrogateRange = [0xDC00..0xDFFF]
 
   @getBlockName: (str) ->
-    charCode = str.charCodeAt()
-    # Surrogete pair
-    if charCode in @highSurrogateRange
-      charCodeHigh = charCode
-      charCodeLow = str.charCodeAt(1)
-      if charCodeLow in @lowSurrogateRange
-        charCode = 0x10000 + (charCodeHigh - 0xD800) * 0x400 + (charCodeLow - 0xDC00);
+    charCode = @unicodeCharCodeAt(str)
     for block in @unicode
       if charCode in block[0]
         return block[1]
@@ -25,3 +19,20 @@ class UnicodeUtil
       if block[1].contains(name)
         ranges = ranges.concat([block[0]])
     return ranges
+
+  @unicodeCharCodeAt: (str, index = 0) ->
+    surrogateCount = 0
+    for i in [0...index]
+      if str.charCodeAt(i + surrogateCount) in @highSurrogateRange
+        surrogateCount += 1
+    index += surrogateCount
+    charCode = str.charCodeAt(index)
+    # Surrogete pair
+    if charCode in @highSurrogateRange
+      charCodeHigh = charCode
+      charCodeLow = str.charCodeAt(index + 1)
+      if charCodeLow in @lowSurrogateRange
+        charCode = 0x10000 +
+                   (charCodeHigh - 0xD800) * 0x400 +
+                   charCodeLow - 0xDC00
+    return charCode

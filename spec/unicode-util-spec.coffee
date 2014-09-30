@@ -46,7 +46,32 @@ describe "UnicodeUtil", ->
             charCodeHigh = charCode
             charCodeLow = c.charCodeAt(1)
             if charCodeLow in UnicodeUtil.lowSurrogateRange
-              charCode = 0x10000 + (charCodeHigh - 0xD800) * 0x400 + (charCodeLow - 0xDC00);
+              charCode = 0x10000 + (charCodeHigh - 0xD800) * 0x400 +
+              (charCodeLow - 0xDC00);
           if charCode in r
             ok_count += 1
       expect(ok_count).toEqual(test_chars.length)
+
+  describe "UnicodeUtil.unicodeCharCodeAt()", ->
+    it "nonesurrogate", ->
+      text = "aB漢"
+      expect(UnicodeUtil.unicodeCharCodeAt(text)).toEqual(text.charCodeAt())
+      expect(UnicodeUtil.unicodeCharCodeAt(text, 0)).toEqual(text.charCodeAt(0))
+      expect(UnicodeUtil.unicodeCharCodeAt(text, 1)).toEqual(text.charCodeAt(1))
+      expect(UnicodeUtil.unicodeCharCodeAt(text, 2)).toEqual(text.charCodeAt(2))
+    it "surrogate", ->
+      text = "𠮷田"
+      expect(UnicodeUtil.unicodeCharCodeAt(text)).toEqual(
+          0x10000 + (text.charCodeAt(0) - 0xD800) * 0x400 +
+          (text.charCodeAt(1) - 0xDC00))
+      expect(UnicodeUtil.unicodeCharCodeAt(text, 0)).toEqual(
+          0x10000 + (text.charCodeAt(0) - 0xD800) * 0x400 +
+          (text.charCodeAt(1) - 0xDC00))
+      expect(UnicodeUtil.unicodeCharCodeAt(text, 1)).toEqual(text.charCodeAt(2))
+
+    text = "𠮷田𠮷田𠮷田𠮷田𠮷田"
+    expect(UnicodeUtil.unicodeCharCodeAt(text), 4).toEqual(
+        0x10000 + (text.charCodeAt(6) - 0xD800) * 0x400 +
+        (text.charCodeAt(7) - 0xDC00))
+    expect(UnicodeUtil.unicodeCharCodeAt(text, 5)).toEqual(text.charCodeAt(8))
+    expect(UnicodeUtil.unicodeCharCodeAt(text, 7)).toEqual(text.charCodeAt(11))
