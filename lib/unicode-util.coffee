@@ -18,3 +18,10 @@ class UnicodeUtil
       if charCode in block[0]
         return block[1]
     return null
+
+  @getRangesByName: (name) ->
+    ranges = new Array()
+    for block in @unicode
+      if block[1].contains(name)
+        ranges = ranges.concat([block[0]])
+    return ranges
