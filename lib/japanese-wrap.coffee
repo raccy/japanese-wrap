@@ -19,12 +19,12 @@ module.exports =
     'ギリシャ文字及びコプト文字の幅':
       type: 'integer'
       default: 2
-      minimum: 0
+      minimum: 1
       maximum: 2
     'キリル文字の幅':
       type: 'integer'
       default: 2
-      minimum: 0
+      minimum: 1
       maximum: 2
     'ASCII文字を禁則処理に含める':
       type: 'boolean'
