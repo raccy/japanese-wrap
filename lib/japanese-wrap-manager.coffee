@@ -6,8 +6,32 @@ class JapaneseWrapManager
   @characterClasses = require "./character-classes"
 
   constructor: ->
-    # Not incude '　'(U+3000)
-    @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
+    @setupCharRegexp()
+
+    configNameList = [
+      '全角句読点ぶら下げ',
+      '半角句読点ぶら下げ',
+      '全角ピリオド/コンマぶら下げ',
+      '半角ピリオド/コンマぶら下げ',
+      'ギリシャ文字及びコプト文字の幅',
+      'キリル文字の幅',
+      'ASCII文字を禁則処理に含める',
+      '半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める',
+      '和文間隔(U+3000)を空白文字に含める',
+    ]
+    for name in configNameList
+      configName = 'japanese-wrap.' + name
+      atom.config.observe configName, (newValue) =>
+        @setupCharRegexp()
+
+  setupCharRegexp: ->
+    # debug
+    console.log("run setupCharRegexp")
+    if atom.config.get('japanese-wrap.和文間隔(U+3000)を空白文字に含める')
+      @whitespaceCharRegexp = /\s/
+    else
+      # Not incude '　'(U+3000)
+      @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
 
     # word charater
     @wordCharRegexp = CharacterRegexpUtil.string2regexp(

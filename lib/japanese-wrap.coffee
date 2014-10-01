@@ -34,7 +34,7 @@ module.exports =
       default: true
     '和文間隔(U+3000)を空白文字に含める':
       type: 'boolean'
-      default: true
+      default: false
 
   activate: (state) ->
     @japaneseWrapManager = new JapaneseWrapManager

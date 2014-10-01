@@ -1,12 +1,15 @@
 JapaneseWrapManager = require '../lib/japanese-wrap-manager'
+JapaneseWrap = require '../lib/japanese-wrap'
 
 describe "JapaneseWrapManager", ->
   jwm = undefined
   beforeEach ->
     jwm = new JapaneseWrapManager
+    # 設定デフォルト
+    for name, value of JapaneseWrap["config"]
+      atom.config.set("japanese-wrap." + name, value["default"])
 
   describe "JapaneseWrapManager#findeWrapcolumn()", ->
-
     it "Engrish", ->
       text = "All your package are belong to us."
       expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(9)
@@ -244,3 +247,27 @@ describe "JapaneseWrapManager", ->
       expect(jwm.findJapaneseWrapColumn(text, 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn(text, 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(3)
+
+  describe "japanese-wrap.和文間隔(U+3000)を空白文字に含める", ->
+    it "default", ->
+      text = "あいう　　あいう"
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6)
+
+    it "true", ->
+      atom.config.set('japanese-wrap.和文間隔(U+3000)を空白文字に含める', true)
+      text = "あいう　　あいう"
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6)
+
+    it "false", ->
+      atom.config.set('japanese-wrap.和文間隔(U+3000)を空白文字に含める', false)
+      text = "あいう　　あいう"
+      expect(jwm.findJapaneseWrapColumn(text, 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(4)
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6)
