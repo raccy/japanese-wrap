@@ -8,7 +8,7 @@ module.exports =
   "Opening brackets": "‘“（〔［｛〈《「『【｟〘〖«〝＜"
   # add "<" (U+003C LESS-THAN SIGN SIGN)
   "Opening brackets ASCII": "([{<" # ([{<
-  "Opening brackets HANKOKU": "｢"
+  "Opening brackets HANKAKU": "｢"
 
   # A.2 Closing brackets (cl-02)
   # Basic Latin -> Halfwidth and Fullwidth Forms

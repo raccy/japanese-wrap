@@ -33,27 +33,49 @@ class JapaneseWrapManager
       # Not incude '　'(U+3000)
       @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
 
+    ascii = atom.config.get('japanese-wrap.ASCII文字を禁則処理に含める')
+    hankaku = atom.config.get('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める')
+
     # word charater
     @wordCharRegexp = CharacterRegexpUtil.string2regexp(
         JapaneseWrapManager.characterClasses["Western characters"])
 
     # Characters Not Starting a Line and Low Surrogate
-    @notStartingCharRexgep = CharacterRegexpUtil.string2regexp(
-        JapaneseWrapManager.characterClasses["Closing brackets"],
-        JapaneseWrapManager.characterClasses["Hyphens"],
-        JapaneseWrapManager.characterClasses["Dividing punctuation marks"],
-        JapaneseWrapManager.characterClasses["Middle dots"],
-        JapaneseWrapManager.characterClasses["Full stops"],
-        JapaneseWrapManager.characterClasses["Commas"],
-        JapaneseWrapManager.characterClasses["Iteration marks"],
-        JapaneseWrapManager.characterClasses["Prolonged sound mark"],
-        JapaneseWrapManager.characterClasses["Small kana"],
-        CharacterRegexpUtil.range2string(UnicodeUtil.lowSurrogateRange))
+    notStartingCharList = [
+      JapaneseWrapManager.characterClasses["Closing brackets"],
+      JapaneseWrapManager.characterClasses["Hyphens"],
+      JapaneseWrapManager.characterClasses["Dividing punctuation marks"],
+      JapaneseWrapManager.characterClasses["Middle dots"],
+      JapaneseWrapManager.characterClasses["Full stops"],
+      JapaneseWrapManager.characterClasses["Commas"],
+      JapaneseWrapManager.characterClasses["Iteration marks"],
+      JapaneseWrapManager.characterClasses["Prolonged sound mark"],
+      JapaneseWrapManager.characterClasses["Small kana"],
+      CharacterRegexpUtil.range2string(UnicodeUtil.lowSurrogateRange),
+    ]
+    if hankaku
+      notStartingCharList.push(
+        JapaneseWrapManager.characterClasses["Closing brackets HANKAKU"],
+        JapaneseWrapManager.characterClasses["Middle dots HANKAKU"],
+        JapaneseWrapManager.characterClasses["Full stops HANKAKU"],
+        JapaneseWrapManager.characterClasses["Commas HANKAKU"],
+        JapaneseWrapManager.characterClasses["Prolonged sound mark HANKAKU"],
+        JapaneseWrapManager.characterClasses["Small kana HANKAKU"],
+      )
+    @notStartingCharRexgep =
+        CharacterRegexpUtil.string2regexp(notStartingCharList...)
 
     # Characters Not Ending a Line and High Surrogate
-    @notEndingCharRegexp = CharacterRegexpUtil.string2regexp(
-        JapaneseWrapManager.characterClasses["Opening brackets"],
-        CharacterRegexpUtil.range2string(UnicodeUtil.highSurrogateRange))
+    notEndingCharList = [
+      JapaneseWrapManager.characterClasses["Opening brackets"],
+      CharacterRegexpUtil.range2string(UnicodeUtil.highSurrogateRange),
+    ]
+    if hankaku
+      notEndingCharList.push(
+        JapaneseWrapManager.characterClasses["Opening brackets HANKAKU"],
+      )
+    @notEndingCharRegexp =
+        CharacterRegexpUtil.string2regexp(notEndingCharList...)
 
     # Character Width
     # TODO: combine chars, etc...

@@ -69,7 +69,7 @@ describe "JapaneseWrapManager", ->
 
     it "行頭禁止", ->
       # 禁止される文字
-      list = ["、", "。", "，", "．", "：", "；", "］", "）", "｝", "！", "？", "」", "〜", ]
+      list = ["、", "。", "，", "．", "：", "；", "］", "）", "｝", "！", "？", "」", "〜", "ァ"]
       for char in list
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(1)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(1)
@@ -86,9 +86,9 @@ describe "JapaneseWrapManager", ->
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
 
       # 半角文字
-      list = ["､", "｡", "｣", "･", "ｰ", "ﾞ", "ﾟ"]
+      list = ["､", "｡", "｣", "･", "ｰ", "ｧ"]
       for char in list
-        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(1)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
@@ -115,8 +115,8 @@ describe "JapaneseWrapManager", ->
       list = ["｢"]
       for char in list
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
-        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
-        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(2)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
 
     it "複雑な組み合わせ: 空白の後の行頭禁止", ->
@@ -271,3 +271,55 @@ describe "JapaneseWrapManager", ->
       expect(jwm.findJapaneseWrapColumn(text, 8)).toEqual(4)
       expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(5)
       expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6)
+
+  describe "japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める", ->
+    it "default", ->
+      # 半角文字
+      list = ["､", "｡", "｣", "･", "ｰ", "ｧ"]
+      for char in list
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(1)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+      # 半角文字
+      list = ["｢"]
+      for char in list
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+    it "true", ->
+      atom.config.set('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める', true)
+      # 半角文字
+      list = ["､", "｡", "｣", "･", "ｰ", "ｧ"]
+      for char in list
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(1)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+      # 半角文字
+      list = ["｢"]
+      for char in list
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+
+    it "false", ->
+      atom.config.set('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める', false)
+      # 半角文字
+      list = ["､", "｡", "｣", "･", "ｰ", "ｧ"]
+      for char in list
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+      # 半角文字
+      list = ["｢"]
+      for char in list
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+        expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
