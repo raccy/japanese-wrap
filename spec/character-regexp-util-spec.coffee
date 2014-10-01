@@ -42,6 +42,14 @@ describe "CharacterRegexpUtil", ->
           toEqual(/[\u4000-\u8000]/)
       expect(CharacterRegexpUtil.range2regexp([0x12AB..0x34CD])).
           toEqual(/[\u12AB-\u34CD]/)
+    it "over 0x10000", ->
+      expect(CharacterRegexpUtil.range2regexp([0x10000..0x10FFFF])).
+          toEqual(/[\uD800-\uDBFF]/)
+    it "ranges", ->
+      expect(CharacterRegexpUtil.range2regexp(
+          [0x20..0x40],
+          [0x300..0x600])).
+              toEqual(/[\u0020-\u0040\u0300-\u0600]/)
 
   describe "CharacterRegexpUtil.string2regexp()", ->
     it "single char", ->

@@ -62,5 +62,5 @@ class CharaterRegexpUtil
           @code2uchar(0x10000) + "-" + @code2uchar(lastCode)
     return str
 
-  @range2regexp: (range) ->
-    return @string2regexp(@range2string(range))
+  @range2regexp: (rangeList...) ->
+    return @string2regexp(@range2string(rangeList...))
