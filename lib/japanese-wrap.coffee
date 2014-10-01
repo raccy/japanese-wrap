@@ -4,18 +4,18 @@ module.exports =
   japaneseWrapManager: null
 
   config:
-    '全角句読点ぶら下げ':
-      type: 'boolean'
-      default: true
-    '半角句読点ぶら下げ':
-      type: 'boolean'
-      default: true
-    '全角ピリオド/コンマぶら下げ':
-      type: 'boolean'
-      default: false
-    '半角ピリオド/コンマぶら下げ':
-      type: 'boolean'
-      default: false
+    #'全角句読点ぶら下げ':
+    #  type: 'boolean'
+    #  default: true
+    #'半角句読点ぶら下げ':
+    #  type: 'boolean'
+    #  default: true
+    #'全角ピリオド/コンマぶら下げ':
+    #  type: 'boolean'
+    #  default: false
+    #'半角ピリオド/コンマぶら下げ':
+    #  type: 'boolean'
+    #  default: false
     'ギリシャ文字及びコプト文字の幅':
       type: 'integer'
       default: 2

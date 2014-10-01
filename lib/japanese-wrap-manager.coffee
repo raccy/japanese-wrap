@@ -9,10 +9,10 @@ class JapaneseWrapManager
     @setupCharRegexp()
 
     configNameList = [
-      '全角句読点ぶら下げ',
-      '半角句読点ぶら下げ',
-      '全角ピリオド/コンマぶら下げ',
-      '半角ピリオド/コンマぶら下げ',
+      #'全角句読点ぶら下げ',
+      #'半角句読点ぶら下げ',
+      #'全角ピリオド/コンマぶら下げ',
+      #'半角ピリオド/コンマぶら下げ',
       'ギリシャ文字及びコプト文字の幅',
       'キリル文字の幅',
       'ASCII文字を禁則処理に含める',
@@ -62,9 +62,10 @@ class JapaneseWrapManager
     # @fullWidthChar = /[^\u0000-\u036F\uFF61-\uFFDC]/
 
     # Line Adjustment by Hanging Punctuation
-    @hangingPunctuationCharRegexp = CharacterRegexpUtil.string2regexp(
-        JapaneseWrapManager.characterClasses["Full stops"],
-        JapaneseWrapManager.characterClasses["Commas"])
+    # TODO: 0.2.1...
+    #@hangingPunctuationCharRegexp = CharacterRegexpUtil.string2regexp(
+    #    JapaneseWrapManager.characterClasses["Full stops"],
+    #    JapaneseWrapManager.characterClasses["Commas"])
 
   # overwrite Display#findWrapColumn()
   overwriteFindWrapColumn: (displayBuffer) ->
