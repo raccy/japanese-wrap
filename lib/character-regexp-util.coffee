@@ -50,14 +50,17 @@ class CharaterRegexpUtil
   @char2uchar: (char) ->
     return @code2uchar(char.charCodeAt(0))
 
-  @range2string: (range) ->
-    firstCode = range[0]
-    lastCode = range[range.length - 1]
-    if lastCode < 0x10000 || firstCode >= 0x10000
-      return @code2uchar(firstCode) + "-" + @code2uchar(lastCode)
-    else
-      return @code2uchar(firstCode) + "-" + @code2uchar(0xFFFF) +
-        @code2uchar(0x10000) + "-" + @code2uchar(lastCode)
+  @range2string: (rangeList...) ->
+    str = ""
+    for range in rangeList
+      firstCode = range[0]
+      lastCode = range[range.length - 1]
+      if lastCode < 0x10000 || firstCode >= 0x10000
+        str += @code2uchar(firstCode) + "-" + @code2uchar(lastCode)
+      else
+        str += @code2uchar(firstCode) + "-" + @code2uchar(0xFFFF) +
+          @code2uchar(0x10000) + "-" + @code2uchar(lastCode)
+    return str
 
   @range2regexp: (range) ->
     return @string2regexp(@range2string(range))

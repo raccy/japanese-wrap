@@ -11,6 +11,27 @@ describe "CharacterRegexpUtil", ->
           toEqual("\\u4000-\\u8000")
       expect(CharacterRegexpUtil.range2string([0x12AB..0x34CD])).
           toEqual("\\u12AB-\\u34CD")
+    it "over 0x10000", ->
+      expect(CharacterRegexpUtil.range2string([0x10000..0x10FFFF])).
+          toEqual("\\uD800-\\uDBFF")
+      expect(CharacterRegexpUtil.range2string([0xFF00..0x20000])).
+          toEqual("\\uFF00-\\uFFFF\\uD800-\\uD840")
+      expect(CharacterRegexpUtil.range2string([0x20000..0xFFFFF])).
+          toEqual("\\uD840-\\uDBBF")
+      expect(CharacterRegexpUtil.range2string([0x100000..0x10FFFF])).
+          toEqual("\\uDBC0-\\uDBFF")
+    it "ranges", ->
+      expect(CharacterRegexpUtil.range2string(
+          [0x20..0x40],
+          [0x300..0x600])).
+              toEqual("\\u0020-\\u0040\\u0300-\\u0600")
+      expect(CharacterRegexpUtil.range2string(
+          [0x20..0x40],
+          [0x300..0x600],
+          [0x4000..0x8000],
+          [0x10000..0x10FFFF])).
+              toEqual("\\u0020-\\u0040\\u0300-\\u0600\\u4000-\\u8000\\uD800-\\uDBFF")
+
   describe "CharacterRegexpUtil.range2regexp()", ->
     it "range", ->
       expect(CharacterRegexpUtil.range2regexp([0x20..0x40])).
@@ -21,6 +42,7 @@ describe "CharacterRegexpUtil", ->
           toEqual(/[\u4000-\u8000]/)
       expect(CharacterRegexpUtil.range2regexp([0x12AB..0x34CD])).
           toEqual(/[\u12AB-\u34CD]/)
+
   describe "CharacterRegexpUtil.string2regexp()", ->
     it "single char", ->
       expect(CharacterRegexpUtil.string2regexp("a")).
@@ -52,6 +74,7 @@ describe "CharacterRegexpUtil", ->
           toEqual(/[ab]/)
       expect(CharacterRegexpUtil.string2regexp("\\u0020-\\u0040", "a-c", "あ")).
           toEqual(/[\u0020-\u0040a-cあ]/)
+
   describe "CharacterRegexpUtil.combineRegexp()", ->
     it "single", ->
       expect(CharacterRegexpUtil.combineRegexp(/あ/)).
@@ -65,6 +88,7 @@ describe "CharacterRegexpUtil", ->
           toEqual(/[abc]/)
       expect(CharacterRegexpUtil.combineRegexp(/[\u0020-\u0040]/, /[a-c]/, /[あ]/)).
           toEqual(/[\u0020-\u0040a-cあ]/)
+
   describe "CharacterRegexpUtil.code2uchar()", ->
     it "code < 0x1000", ->
       expect(CharacterRegexpUtil.code2uchar(0x2)).
@@ -97,6 +121,7 @@ describe "CharacterRegexpUtil", ->
           toEqual("")
       expect(CharacterRegexpUtil.code2uchar(0x110000)).
           toEqual("")
+
   describe "CharacterRegexpUtil.char2uchar()", ->
     it "code < 0x1000", ->
       expect(CharacterRegexpUtil.char2uchar(" ")).
