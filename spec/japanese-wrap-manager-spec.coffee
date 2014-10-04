@@ -306,7 +306,6 @@ describe "JapaneseWrapManager", ->
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(2)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
 
-
     it "false", ->
       atom.config.set('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める', false)
       # 半角文字
@@ -323,3 +322,58 @@ describe "JapaneseWrapManager", ->
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
         expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+  # TODO
+  # 実装するには禁則処理においてnotStartかつword、notEndかつwordの
+  # 処理を考慮した実装をする必要がある。
+  # 簡単にはできなさそうなので、0.3.0あたりでがんばりたい。
+  #describe "japanese-wrap.ASCII文字を禁則処理に含める", ->
+  #  it "default", ->
+  #    # ASCII記号の例外。
+  #    list = [".", ",", ":", ";", "]", ")", "}", "!", "?"]
+  #    for char in list
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+  #    # ASCII記号の例外。
+  #    list = ["[", "(", "{"]
+  #    for char in list
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+  #  it "true", ->
+  #    atom.config.set('japanese-wrap.ASCII文字を禁則処理に含める', true)
+  #    # ASCII記号の例外。
+  #    list = [".", ",", ":", ";", "]", ")", "}", "!", "?"]
+  #    for char in list
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(1)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+  #    # ASCII記号の例外。
+  #    list = ["[", "(", "{"]
+  #    for char in list
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+  #  it "false", ->
+  #    atom.config.set('japanese-wrap.ASCII文字を禁則処理に含める', false)
+  #    # ASCII記号の例外。
+  #    list = [".", ",", ":", ";", "]", ")", "}", "!", "?"]
+  #    for char in list
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+  #    # ASCII記号の例外。
+  #    list = ["[", "(", "{"]
+  #    for char in list
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 4)).toEqual(2)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
+  #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)

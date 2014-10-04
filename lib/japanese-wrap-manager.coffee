@@ -26,14 +26,14 @@ class JapaneseWrapManager
 
   setupCharRegexp: ->
     # debug
-    console.log("run setupCharRegexp")
+    #console.log("run setupCharRegexp")
     if atom.config.get('japanese-wrap.和文間隔(U+3000)を空白文字に含める')
       @whitespaceCharRegexp = /\s/
     else
       # Not incude '　'(U+3000)
       @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
 
-    ascii = atom.config.get('japanese-wrap.ASCII文字を禁則処理に含める')
+    #ascii = atom.config.get('japanese-wrap.ASCII文字を禁則処理に含める')
     hankaku = atom.config.get('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める')
 
     # word charater
@@ -55,7 +55,18 @@ class JapaneseWrapManager
       JapaneseWrapManager.characterClasses["Small kana"],
       CharacterRegexpUtil.range2string(UnicodeUtil.lowSurrogateRange),
     ]
-    # TODO: ascii
+    # TODO
+    #if ascii
+    #  notStartingCharList.push(
+    #    CharacterRegexpUtil.escapeAscii(
+    #      JapaneseWrapManager.characterClasses["Closing brackets ASCII"]),
+    #    CharacterRegexpUtil.escapeAscii(
+    #      JapaneseWrapManager.characterClasses["Dividing punctuation marks ASCII"]),
+    #    CharacterRegexpUtil.escapeAscii(
+    #      JapaneseWrapManager.characterClasses["Full stops ASCII"]),
+    #    CharacterRegexpUtil.escapeAscii(
+    #      JapaneseWrapManager.characterClasses["Commas ASCII"]),
+    #  )
     if hankaku
       notStartingCharList.push(
         JapaneseWrapManager.characterClasses["Closing brackets HANKAKU"],
@@ -73,7 +84,12 @@ class JapaneseWrapManager
       JapaneseWrapManager.characterClasses["Opening brackets"],
       CharacterRegexpUtil.range2string(UnicodeUtil.highSurrogateRange),
     ]
-    # TODO: ascii
+    # TODO
+    #if ascii
+    #  notEndingCharList.push(
+    #    CharacterRegexpUtil.escapeAscii(
+    #      JapaneseWrapManager.characterClasses["Opening brackets ASCII"]),
+    #  )
     if hankaku
       notEndingCharList.push(
         JapaneseWrapManager.characterClasses["Opening brackets HANKAKU"],
@@ -176,20 +192,26 @@ class JapaneseWrapManager
             preColumn
           else
             return column + 1
-      else if @wordCharRegexp.test(line[column])
-        if (! preWord) and cutable
-          return column + 1
-        else
-          preWord = true
       else if @notEndingCharRegexp.test(line[column])
         cutable = true
-        preWord = false
+        if @wordCharRegexp.test(line[column])
+          preWord = true
+        else
+          preWord = false
       else if @notStartingCharRexgep.test(line[column])
         if cutable or preWord
           return column + 1
         else
           cutable = false
-          preWord = false
+          if @wordCharRegexp.test(line[column])
+            preWord = true
+          else
+            preWord = false
+      else if @wordCharRegexp.test(line[column])
+        if (! preWord) and cutable
+          return column + 1
+        else
+          preWord = true
       else
         if cutable or preWord
           return column + 1

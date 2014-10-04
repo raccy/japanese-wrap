@@ -26,9 +26,9 @@ module.exports =
       default: 2
       minimum: 1
       maximum: 2
-    'ASCII文字を禁則処理に含める':
-      type: 'boolean'
-      default: false
+    #'ASCII文字を禁則処理に含める':
+    #  type: 'boolean'
+    #  default: false
     '半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める':
       type: 'boolean'
       default: true
