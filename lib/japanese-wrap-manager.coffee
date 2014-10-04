@@ -41,6 +41,8 @@ class JapaneseWrapManager
         JapaneseWrapManager.characterClasses["Western characters"])
 
     # Characters Not Starting a Line and Low Surrogate
+    # TODO: add 濁音/半濁音
+    # TODO: add combine
     notStartingCharList = [
       JapaneseWrapManager.characterClasses["Closing brackets"],
       JapaneseWrapManager.characterClasses["Hyphens"],
@@ -53,6 +55,7 @@ class JapaneseWrapManager
       JapaneseWrapManager.characterClasses["Small kana"],
       CharacterRegexpUtil.range2string(UnicodeUtil.lowSurrogateRange),
     ]
+    # TODO: ascii
     if hankaku
       notStartingCharList.push(
         JapaneseWrapManager.characterClasses["Closing brackets HANKAKU"],
@@ -70,6 +73,7 @@ class JapaneseWrapManager
       JapaneseWrapManager.characterClasses["Opening brackets"],
       CharacterRegexpUtil.range2string(UnicodeUtil.highSurrogateRange),
     ]
+    # TODO: ascii
     if hankaku
       notEndingCharList.push(
         JapaneseWrapManager.characterClasses["Opening brackets HANKAKU"],
