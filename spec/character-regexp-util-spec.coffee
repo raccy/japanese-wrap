@@ -141,3 +141,21 @@ describe "CharacterRegexpUtil", ->
     it "code >= 0x1000", ->
       expect(CharacterRegexpUtil.char2uchar("𠮷")).
           toEqual("\\uD842")
+
+  describe "CharacterRegexpUtil.escapeAscii()", ->
+    it "single", ->
+      expect(CharacterRegexpUtil.escapeAscii("a")).
+          toEqual("\\u0061")
+      expect(CharacterRegexpUtil.escapeAscii("A")).
+          toEqual("\\u0041")
+      expect(CharacterRegexpUtil.escapeAscii(" ")).
+          toEqual("\\u0020")
+      expect(CharacterRegexpUtil.escapeAscii("!")).
+          toEqual("\\u0021")
+      expect(CharacterRegexpUtil.escapeAscii("\\")).
+          toEqual("\\u005C")
+      expect(CharacterRegexpUtil.escapeAscii("*")).
+          toEqual("\\u002A")
+    it "word", ->
+      expect(CharacterRegexpUtil.escapeAscii("aA ")).
+          toEqual("\\u0061\\u0041\\u0020")

@@ -64,3 +64,9 @@ class CharaterRegexpUtil
 
   @range2regexp: (rangeList...) ->
     return @string2regexp(@range2string(rangeList...))
+
+  @escapeAscii: (str) ->
+    escape_str = ""
+    for i in [0...str.length]
+      escape_str += @code2uchar(str.charCodeAt(i))
+    return escape_str
