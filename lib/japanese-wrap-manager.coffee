@@ -35,6 +35,8 @@ class JapaneseWrapManager
 
     #ascii = atom.config.get('japanese-wrap.ASCII文字を禁則処理に含める')
     hankaku = atom.config.get('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める')
+    greek_size = atom.config.get('japanese-wrap.ギリシャ文字及びコプト文字の幅')
+    cyrillic_size = atom.config.get('japanese-wrap.キリル文字の幅')
 
     # word charater
     @wordCharRegexp = CharacterRegexpUtil.string2regexp(
@@ -98,9 +100,31 @@ class JapaneseWrapManager
         CharacterRegexpUtil.string2regexp(notEndingCharList...)
 
     # Character Width
-    # TODO: combine chars, etc...
-    @zeroWidthCharRegexp = /[\u200B-\u200F\uDC00-\uDFFF\uFEFF]/
-    @halfWidthCharRegexp = /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F\uFF61-\uFFDC]/
+    @zeroWidthCharRegexp = CharacterRegexpUtil.string2regexp(
+        "\\u200B-\\u200F",
+        CharacterRegexpUtil.range2string(UnicodeUtil.lowSurrogateRange),
+        "\\uFEFF",
+        CharacterRegexpUtil.range2string(
+            UnicodeUtil.getRangeListByName("Combining")...),
+        "゙゚", # U+3099, U+309A
+    )
+
+    halfWidthCharList = [
+      CharacterRegexpUtil.range2string(
+          UnicodeUtil.getRangeListByName("Latin")...),
+      "\\u2000-\\u200A",
+      "\\u2122",
+      "\\uFF61-\\uFFDC",
+    ]
+    if greek_size == 1
+      halfWidthCharList.push(CharacterRegexpUtil.range2string(
+          UnicodeUtil.getRangeListByName("Greek")...))
+    if cyrillic_size == 1
+      halfWidthCharList.push(CharacterRegexpUtil.range2string(
+          UnicodeUtil.getRangeListByName("Cyrillic")...))
+    @halfWidthCharRegexp =
+        CharacterRegexpUtil.string2regexp(halfWidthCharList...)
+    # /[\u0000-\u036F\u2000-\u2000A\u2122\uD800-\uD83F]/
     # @fullWidthChar = /[^\u0000-\u036F\uFF61-\uFFDC]/
 
     # Line Adjustment by Hanging Punctuation

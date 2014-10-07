@@ -377,3 +377,65 @@ describe "JapaneseWrapManager", ->
   #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 5)).toEqual(3)
   #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
   #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
+
+  describe "japanese-wrap.ギリシャ文字及びコプト文字の幅", ->
+    it "default", ->
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
+    it "0", ->
+      atom.config.set('japanese-wrap.ギリシャ文字及びコプト文字の幅', 0)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
+    it "1", ->
+      atom.config.set('japanese-wrap.ギリシャ文字及びコプト文字の幅', 1)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(4)
+    it "2", ->
+      atom.config.set('japanese-wrap.ギリシャ文字及びコプト文字の幅', 2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
+    it "3", ->
+      atom.config.set('japanese-wrap.ギリシャ文字及びコプト文字の幅', 3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
+
+  describe "japanese-wrap.キリル文字の幅", ->
+    it "default", ->
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
+    it "0", ->
+      atom.config.set('japanese-wrap.キリル文字の幅', 0)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
+    it "1", ->
+      atom.config.set('japanese-wrap.キリル文字の幅', 1)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(4)
+    it "2", ->
+      atom.config.set('japanese-wrap.キリル文字の幅', 2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
+    it "3", ->
+      atom.config.set('japanese-wrap.キリル文字の幅', 3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
+      expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
