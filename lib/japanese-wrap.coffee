@@ -16,18 +16,21 @@ module.exports =
     #'半角ピリオド/コンマぶら下げ':
     #  type: 'boolean'
     #  default: false
-    'widthOfGreekAndCoptic':
-      title: 'ギリシャ文字及びコプト文字の幅'
-      type: 'integer'
-      default: 2
-      minimum: 1
-      maximum: 2
-    'widthOfCyrillic':
-      title: 'キリル文字の幅'
-      type: 'integer'
-      default: 2
-      minimum: 1
-      maximum: 2
+    characterWidth:
+      type: 'object'
+      properties:
+        greekAndCoptic:
+          title: 'ギリシャ文字及びコプト文字の幅'
+          type: 'integer'
+          default: 2
+          minimum: 1
+          maximum: 2
+        cyrillic:
+          title: 'キリル文字の幅'
+          type: 'integer'
+          default: 2
+          minimum: 1
+          maximum: 2
     #'ASCII文字を禁則処理に含める':
     #  type: 'boolean'
     #  default: false

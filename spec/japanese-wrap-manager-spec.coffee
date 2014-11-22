@@ -385,63 +385,63 @@ describe "JapaneseWrapManager", ->
   #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 6)).toEqual(3)
   #      expect(jwm.findJapaneseWrapColumn("前文#{char}後文", 7)).toEqual(4)
 
-  describe "japanese-wrap.widthOfGreekAndCoptic", ->
+  describe "japanese-wrap.characterWidth.greekAndCoptic", ->
     it "default", ->
       expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
     it "0", ->
-      atom.config.set('japanese-wrap.widthOfGreekAndCoptic', 0)
+      atom.config.set('japanese-wrap.characterWidth.greekAndCoptic', 0)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
     it "1", ->
-      atom.config.set('japanese-wrap.widthOfGreekAndCoptic', 1)
+      atom.config.set('japanese-wrap.characterWidth.greekAndCoptic', 1)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(4)
     it "2", ->
-      atom.config.set('japanese-wrap.widthOfGreekAndCoptic', 2)
+      atom.config.set('japanese-wrap.characterWidth.greekAndCoptic', 2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
     it "3", ->
-      atom.config.set('japanese-wrap.widthOfGreekAndCoptic', 3)
+      atom.config.set('japanese-wrap.characterWidth.greekAndCoptic', 3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文α後文", 7)).toEqual(3)
 
-  describe "japanese-wrap.widthOfCyrillic", ->
+  describe "japanese-wrap.characterWidth.cyrillic", ->
     it "default", ->
       expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
     it "0", ->
-      atom.config.set('japanese-wrap.widthOfCyrillic', 0)
+      atom.config.set('japanese-wrap.characterWidth.cyrillic', 0)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
     it "1", ->
-      atom.config.set('japanese-wrap.widthOfCyrillic', 1)
+      atom.config.set('japanese-wrap.characterWidth.cyrillic', 1)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(4)
     it "2", ->
-      atom.config.set('japanese-wrap.widthOfCyrillic', 2)
+      atom.config.set('japanese-wrap.characterWidth.cyrillic', 2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
     it "3", ->
-      atom.config.set('japanese-wrap.widthOfCyrillic', 3)
+      atom.config.set('japanese-wrap.characterWidth.cyrillic', 3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 4)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)

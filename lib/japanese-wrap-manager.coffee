@@ -13,8 +13,8 @@ class JapaneseWrapManager
       #'半角句読点ぶら下げ',
       #'全角ピリオド/コンマぶら下げ',
       #'半角ピリオド/コンマぶら下げ',
-      'widthOfGreekAndCoptic',
-      'widthOfCyrillic',
+      'characterWidth.greekAndCoptic',
+      'characterWidth.cyrillic',
       # 'ASCII文字を禁則処理に含める',
       'lineBreakingRule.halfwidthKatakana',
       'lineBreakingRule.ideographicSpaceAsWihteSpace',
@@ -35,8 +35,8 @@ class JapaneseWrapManager
 
     #ascii = atom.config.get('japanese-wrap.ASCII文字を禁則処理に含める')
     hankaku = atom.config.get('japanese-wrap.lineBreakingRule.halfwidthKatakana')
-    greek_size = atom.config.get('japanese-wrap.widthOfGreekAndCoptic')
-    cyrillic_size = atom.config.get('japanese-wrap.widthOfCyrillic')
+    greek_size = atom.config.get('japanese-wrap.characterWidth.greekAndCoptic')
+    cyrillic_size = atom.config.get('japanese-wrap.characterWidth.cyrillic')
 
     # word charater
     @wordCharRegexp = CharacterRegexpUtil.string2regexp(
