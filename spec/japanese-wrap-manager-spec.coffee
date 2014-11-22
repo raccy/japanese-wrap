@@ -446,3 +446,48 @@ describe "JapaneseWrapManager", ->
       expect(jwm.findJapaneseWrapColumn("前文д後文", 5)).toEqual(2)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 6)).toEqual(3)
       expect(jwm.findJapaneseWrapColumn("前文д後文", 7)).toEqual(3)
+
+  describe "japanese-wrap.lineBreakingRule.japanese", ->
+    it "Engrish not lbrj", ->
+      atom.config.set('japanese-wrap.lineBreakingRule.japanese', false)
+      text = "All your package are belong to us."
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(9)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(9)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(9)
+      expect(jwm.findJapaneseWrapColumn(text, 13)).toEqual(9)
+      expect(jwm.findJapaneseWrapColumn(text, 14)).toEqual(9)
+      expect(jwm.findJapaneseWrapColumn(text, 15)).toEqual(9)
+      expect(jwm.findJapaneseWrapColumn(text, 16)).toEqual(17)
+      expect(jwm.findJapaneseWrapColumn(text, 17)).toEqual(17)
+      expect(jwm.findJapaneseWrapColumn(text, 18)).toEqual(17)
+      expect(jwm.findJapaneseWrapColumn(text, 19)).toEqual(17)
+      expect(jwm.findJapaneseWrapColumn(text, 20)).toEqual(21)
+      expect(jwm.findJapaneseWrapColumn(text, 80)).toEqual(undefined)
+
+    it "日本語 not lbrj", ->
+      atom.config.set('japanese-wrap.lineBreakingRule.japanese', false)
+      text = "君達のパッケージは、全てGitHubがいただいた。"
+      expect(jwm.findJapaneseWrapColumn(text, 10)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 11)).toEqual(5)
+      expect(jwm.findJapaneseWrapColumn(text, 12)).toEqual(6) # 行頭禁則文字「ッ」無効
+      expect(jwm.findJapaneseWrapColumn(text, 13)).toEqual(6) # 行頭禁則文字「ッ」無効
+      expect(jwm.findJapaneseWrapColumn(text, 14)).toEqual(7)
+      expect(jwm.findJapaneseWrapColumn(text, 15)).toEqual(7)
+      expect(jwm.findJapaneseWrapColumn(text, 16)).toEqual(8)
+      expect(jwm.findJapaneseWrapColumn(text, 17)).toEqual(8)
+      expect(jwm.findJapaneseWrapColumn(text, 18)).toEqual(9) # 行頭禁則文字「、」無効
+      expect(jwm.findJapaneseWrapColumn(text, 19)).toEqual(9) # 行頭禁則文字「、」無効
+      expect(jwm.findJapaneseWrapColumn(text, 20)).toEqual(10)
+      expect(jwm.findJapaneseWrapColumn(text, 21)).toEqual(10)
+      expect(jwm.findJapaneseWrapColumn(text, 22)).toEqual(11)
+      expect(jwm.findJapaneseWrapColumn(text, 23)).toEqual(11)
+      expect(jwm.findJapaneseWrapColumn(text, 24)).toEqual(12) # 英単語
+      expect(jwm.findJapaneseWrapColumn(text, 25)).toEqual(12) # 英単語
+      expect(jwm.findJapaneseWrapColumn(text, 26)).toEqual(12) # 英単語
+      expect(jwm.findJapaneseWrapColumn(text, 27)).toEqual(12) # 英単語
+      expect(jwm.findJapaneseWrapColumn(text, 28)).toEqual(12)
+      expect(jwm.findJapaneseWrapColumn(text, 29)).toEqual(12)
+      expect(jwm.findJapaneseWrapColumn(text, 30)).toEqual(18)
+      expect(jwm.findJapaneseWrapColumn(text, 31)).toEqual(18)
+      expect(jwm.findJapaneseWrapColumn(text, 32)).toEqual(19)
+      expect(jwm.findJapaneseWrapColumn(text, 80)).toEqual(undefined)

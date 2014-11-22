@@ -23,6 +23,13 @@ class JapaneseWrapManager
       configName = 'japanese-wrap.' + name
       atom.config.observe configName, (newValue) =>
         @setupCharRegexp()
+    @lineBreakingRuleJapanese =
+        atom.config.get('japanese-wrap.lineBreakingRule.japanese')
+    atom.config.observe 'japanese-wrap.lineBreakingRule.japanese',
+        (newValue) =>
+          @lineBreakingRuleJapanese = newValue
+
+
 
   setupCharRegexp: ->
     # debug
@@ -168,23 +175,36 @@ class JapaneseWrapManager
         size = size + 2
 
       if size > softWrapColumn
-        column = @searchBackwardNotEndingColumn(line, wrapColumn)
-        if column?
-          return column
+        if @lineBreakingRuleJapanese
+          column = @searchBackwardNotEndingColumn(line, wrapColumn)
+          if column?
+            return column
 
-        column = @searchForwardWhitespaceCutableColumn(line, wrapColumn)
-        if not column?
-          cutable = false
-        else if column == wrapColumn
-          cutable = true
+          column = @searchForwardWhitespaceCutableColumn(line, wrapColumn)
+          if not column?
+            cutable = false
+          else if column == wrapColumn
+            cutable = true
+          else
+            return column
+
+          return @searchBackwardCutableColumn(
+              line,
+              wrapColumn,
+              cutable,
+              @wordCharRegexp.test(line[wrapColumn]))
         else
-          return column
+          if @wordCharRegexp.test(line[wrapColumn])
+            # search backward for the start of the word on the boundary
+            for column in [wrapColumn..0]
+              return column + 1 unless @wordCharRegexp.test(line[column])
+            return wrapColumn
+          else
+            # search forward for the start of a word past the boundary
+            for column in [wrapColumn..line.length]
+              return column unless @whitespaceCharRegexp.test(line[column])
+            return line.length
 
-        return @searchBackwardCutableColumn(
-            line,
-            wrapColumn,
-            cutable,
-            @wordCharRegexp.test(line[wrapColumn]))
     return
 
   searchBackwardNotEndingColumn: (line, wrapColumn) ->

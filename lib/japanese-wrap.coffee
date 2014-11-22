@@ -37,6 +37,10 @@ module.exports =
     lineBreakingRule:
       type: 'object'
       properties:
+        japanese:
+          title: '日本語禁則処理を行う'
+          type: 'boolean'
+          default: true
         halfwidthKatakana:
           title: '半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める'
           type: 'boolean'
