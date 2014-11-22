@@ -13,11 +13,11 @@ class JapaneseWrapManager
       #'半角句読点ぶら下げ',
       #'全角ピリオド/コンマぶら下げ',
       #'半角ピリオド/コンマぶら下げ',
-      'ギリシャ文字及びコプト文字の幅',
-      'キリル文字の幅',
-      'ASCII文字を禁則処理に含める',
-      '半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める',
-      '和文間隔(U+3000)を空白文字に含める',
+      'widthOfGreekAndCoptic',
+      'widthOfCyrillic',
+      # 'ASCII文字を禁則処理に含める',
+      'lineBreakingRule.halfwidthKatakana',
+      'lineBreakingRule.ideographicSpaceAsWihteSpace',
     ]
     for name in configNameList
       configName = 'japanese-wrap.' + name
@@ -27,16 +27,16 @@ class JapaneseWrapManager
   setupCharRegexp: ->
     # debug
     #console.log("run setupCharRegexp")
-    if atom.config.get('japanese-wrap.和文間隔(U+3000)を空白文字に含める')
+    if atom.config.get('japanese-wrap.lineBreakingRule.ideographicSpaceAsWihteSpace')
       @whitespaceCharRegexp = /\s/
     else
       # Not incude '　'(U+3000)
       @whitespaceCharRegexp = /[\t\n\v\f\r \u00a0\u2000-\u200b\u2028\u2029]/
 
     #ascii = atom.config.get('japanese-wrap.ASCII文字を禁則処理に含める')
-    hankaku = atom.config.get('japanese-wrap.半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める')
-    greek_size = atom.config.get('japanese-wrap.ギリシャ文字及びコプト文字の幅')
-    cyrillic_size = atom.config.get('japanese-wrap.キリル文字の幅')
+    hankaku = atom.config.get('japanese-wrap.lineBreakingRule.halfwidthKatakana')
+    greek_size = atom.config.get('japanese-wrap.widthOfGreekAndCoptic')
+    cyrillic_size = atom.config.get('japanese-wrap.widthOfCyrillic')
 
     # word charater
     @wordCharRegexp = CharacterRegexpUtil.string2regexp(

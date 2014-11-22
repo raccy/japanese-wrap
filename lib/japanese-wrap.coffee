@@ -16,12 +16,14 @@ module.exports =
     #'半角ピリオド/コンマぶら下げ':
     #  type: 'boolean'
     #  default: false
-    'ギリシャ文字及びコプト文字の幅':
+    'widthOfGreekAndCoptic':
+      title: 'ギリシャ文字及びコプト文字の幅'
       type: 'integer'
       default: 2
       minimum: 1
       maximum: 2
-    'キリル文字の幅':
+    'widthOfCyrillic':
+      title: 'キリル文字の幅'
       type: 'integer'
       default: 2
       minimum: 1
@@ -29,12 +31,17 @@ module.exports =
     #'ASCII文字を禁則処理に含める':
     #  type: 'boolean'
     #  default: false
-    '半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める':
-      type: 'boolean'
-      default: true
-    '和文間隔(U+3000)を空白文字に含める':
-      type: 'boolean'
-      default: false
+    lineBreakingRule:
+      type: 'object'
+      properties:
+        halfwidthKatakana:
+          title: '半角カタカナ(JIS X 0201 片仮名図形文字集合)を禁則処理に含める'
+          type: 'boolean'
+          default: true
+        ideographicSpaceAsWihteSpace:
+          title: '和文間隔(U+3000)を空白文字に含める'
+          type: 'boolean'
+          default: false
 
   activate: (state) ->
     @japaneseWrapManager = new JapaneseWrapManager
