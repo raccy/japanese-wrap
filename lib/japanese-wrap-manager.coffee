@@ -149,6 +149,7 @@ class JapaneseWrapManager
       displayBuffer.originalFindWrapColumn = displayBuffer.findWrapColumn
 
     displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
+      # console.log(line)
       return unless @isSoftWrapped()
       # If all characters are full width, the width is twice the length.
       return unless (line.length * 2) > softWrapColumn

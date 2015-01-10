@@ -52,9 +52,10 @@ module.exports =
 
   activate: (state) ->
     @japaneseWrapManager = new JapaneseWrapManager
-    atom.workspaceView.eachEditorView (editorView) =>
-      editor = editorView.getEditor()
+    atom.workspace.observeTextEditors (editor) =>
       @japaneseWrapManager.overwriteFindWrapColumn(editor.displayBuffer)
+      # console.log(editor)
+
 
   deactivate: ->
     atom.workspaceView.eachEditorView (editorView) =>
