@@ -33,4 +33,4 @@ This package dose not correspond to the Chinese or the Korean. But if you may ig
 ## その他
 動作の詳細は下記サイトを参照してください。
 
-https://raccy.github.io/japanese-wrap/
+http://raccy.github.io/japanese-wrap/
