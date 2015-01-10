@@ -31,6 +31,6 @@ This package dose not correspond to the Chinese or the Korean. But if you may ig
 本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。うまく動作しない場合は、最新へアップデートしてみてください。現バージョン(v0.2.2)はv0.169.0で確認し、新しい1.0 APIsに対応しています。
 
 ## その他
-動作の詳細はgithub内のWikiを参照してください。
+動作の詳細は下記サイトを参照してください。
 
-https://github.com/raccy/japanese-wrap/wiki
+https://raccy.github.io/japanese-wrap/
