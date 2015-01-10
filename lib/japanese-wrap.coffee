@@ -58,6 +58,5 @@ module.exports =
 
 
   deactivate: ->
-    atom.workspaceView.eachEditorView (editorView) =>
-      editor = editorView.getEditor()
+    atom.workspace.observeTextEditors (editor) =>
       @japaneseWrapManager.restoreFindWrapColumn(editor.displayBuffer)
