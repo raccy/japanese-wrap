@@ -1,4 +1,7 @@
 Japanese only
+## 0.2.4 - 2015年3月7日
+* FIX: #2 Atom v0.185.0でのAPI変更への対応。
+
 ## 0.2.3 - 2015年1月10日
 * deactivateでの1.0 APIs対応漏れを修正。
 
