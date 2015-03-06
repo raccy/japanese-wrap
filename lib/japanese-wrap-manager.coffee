@@ -29,8 +29,6 @@ class JapaneseWrapManager
         (newValue) =>
           @lineBreakingRuleJapanese = newValue
 
-
-
   setupCharRegexp: ->
     # debug
     #console.log("run setupCharRegexp")
@@ -140,29 +138,42 @@ class JapaneseWrapManager
     #    JapaneseWrapManager.characterClasses["Full stops"],
     #    JapaneseWrapManager.characterClasses["Commas"])
 
-  # overwrite Display#findWrapColumn()
+  # overwrite findWrapColumn()
   overwriteFindWrapColumn: (displayBuffer) ->
-    unless displayBuffer.japaneseWrapManager?
-      displayBuffer.japaneseWrapManager = @
+    # displayBuffer has one line at least, so line:0 should exist.
+    firstTokenizedLine = displayBuffer.tokenizedBuffer.tokenizedLineForRow(0)
+    unless firstTokenizedLine?
+      console.log("displayBuffer has no line.")
+      return
 
-    unless displayBuffer.originalFindWrapColumn?
-      displayBuffer.originalFindWrapColumn = displayBuffer.findWrapColumn
+    # tokenizedLineClass = firstTokenizedLine.constructor::
+    tokenizedLineClass = firstTokenizedLine.__proto__
 
-    displayBuffer.findWrapColumn = (line, softWrapColumn=@getSoftWrapColumn()) ->
-      # console.log(line)
-      return unless @isSoftWrapped()
-      # If all characters are full width, the width is twice the length.
-      return unless (line.length * 2) > softWrapColumn
-      return @japaneseWrapManager.findJapaneseWrapColumn(line, softWrapColumn)
+    unless tokenizedLineClass.japaneseWrapManager?
+      tokenizedLineClass.japaneseWrapManager = @
+      tokenizedLineClass.originalFindWrapColumn =
+          tokenizedLineClass.findWrapColumn
+      tokenizedLineClass.findWrapColumn = (maxColumn) ->
+        # If all characters are full width, the width is twice the length.
+        return unless (@text.length * 2) > maxColumn
+        return @japaneseWrapManager.findJapaneseWrapColumn(@text, maxColumn)
 
-  # restore Display#findWrapColumn()
+  # restore findWrapColumn()
   restoreFindWrapColumn: (displayBuffer) ->
-    if displayBuffer.originalFindWrapColumn?
-      displayBuffer.findWrapColumn = displayBuffer.originalFindWrapColumn
-      displayBuffer.originalFindWrapColumn = undefined
+    # displayBuffer has one line at least, so line:0 should exist.
+    firstTokenizedLine = displayBuffer.tokenizedBuffer.tokenizedLineForRow(0)
+    unless firstTokenizedLine?
+      console.log("displayBuffer has no line.")
+      return
 
-    if displayBuffer.japaneseWrapManager?
-      displayBuffer.japaneseWrapManager = undefined
+    # tokenizedLineClass = firstTokenizedLine.constructor::
+    tokenizedLineClass = firstTokenizedLine.__proto__
+
+    if tokenizedLineClass.japaneseWrapManager?
+      tokenizedLineClass.findWrapColumn =
+          tokenizedLineClass.originalFindWrapColumn
+      tokenizedLineClass.originalFindWrapColumn = undefined
+      tokenizedLineClass.japaneseWrapManager = undefined
 
   # Japanese Wrap Column
   findJapaneseWrapColumn: (line, softWrapColumn) ->
@@ -205,7 +216,6 @@ class JapaneseWrapManager
             for column in [wrapColumn..line.length]
               return column unless @whitespaceCharRegexp.test(line[column])
             return line.length
-
     return
 
   searchBackwardNotEndingColumn: (line, wrapColumn) ->
