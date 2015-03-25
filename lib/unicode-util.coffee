@@ -16,7 +16,7 @@ class UnicodeUtil
   @getRangeListByName: (name) ->
     rangeList = new Array()
     for block in @unicode
-      if block[1].contains(name)
+      if block[1].includes(name)
         rangeList = rangeList.concat([block[0]])
     return rangeList
 
