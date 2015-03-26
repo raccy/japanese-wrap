@@ -15,8 +15,13 @@ class UnicodeUtil
 
   @getRangeListByName: (name) ->
     rangeList = new Array()
+    if !String::includes
+      # console.log("String::includes is undefined")
+      String::includes = ->
+        'use strict'
+        String::indexOf.apply(this, arguments) != -1
     for block in @unicode
-      if block[1].contains(name)
+      if block[1].includes(name)
         rangeList = rangeList.concat([block[0]])
     return rangeList
 
