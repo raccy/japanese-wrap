@@ -6,7 +6,7 @@
   "repository": "https://github.com/raccy/japanese-wrap",
   "license": "MIT",
   "engines": {
-    "atom": ">=0.185.0"
+    "atom": ">=0.189.0"
   },
   "dependencies": {}
 }

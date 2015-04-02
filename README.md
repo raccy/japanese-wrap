@@ -28,7 +28,7 @@ This package dose not correspond to the Chinese or the Korean. But if you may ig
 無効にする場合は、パッケージをDisabledにするか、Uninstallしてください。なお、標準のSoft Wrapが無効の場合は、ラップ機能は動作しませんので、ご注意ください。
 
 ## 動かないときは？
-本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。うまく動作しない場合は、最新へアップデートしてみてください。現バージョン(v0.2.4)はv0.186.0で確認し、新しい1.0 APIsに対応しています。
+本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。うまく動作しない場合は、最新へアップデートしてみてください。現バージョン(v0.2.5)はv0.189.0で確認し、新しい1.0 APIsとchorme 41に対応しています。
 
 ## その他
 動作の詳細は下記サイトを参照してください。
