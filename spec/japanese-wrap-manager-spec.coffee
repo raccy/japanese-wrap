@@ -491,3 +491,14 @@ describe "JapaneseWrapManager", ->
       expect(jwm.findJapaneseWrapColumn(text, 31)).toEqual(18)
       expect(jwm.findJapaneseWrapColumn(text, 32)).toEqual(19)
       expect(jwm.findJapaneseWrapColumn(text, 80)).toEqual(undefined)
+
+  describe "https://github.com/raccy/japanese-wrap/issues/5", ->
+    it "  ・", ->
+      text = "  ・"
+      expect(jwm.findJapaneseWrapColumn(text, 0)).toEqual(undefined)
+    it "  」", ->
+      text = "  ・"
+      expect(jwm.findJapaneseWrapColumn(text, 0)).toEqual(undefined)
+    it "\t・", ->
+      text = "\t・"
+      expect(jwm.findJapaneseWrapColumn(text, 0)).toEqual(undefined)

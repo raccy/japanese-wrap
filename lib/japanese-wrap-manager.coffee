@@ -176,7 +176,9 @@ class JapaneseWrapManager
       tokenizedLineClass.japaneseWrapManager = undefined
 
   # Japanese Wrap Column
+  # TODO: runaway if softWrapColumn = 0
   findJapaneseWrapColumn: (line, softWrapColumn) ->
+    return if softWrapColumn == 0
     size = 0
     for wrapColumn in [0...line.length]
       if @zeroWidthCharRegexp.test(line[wrapColumn])
