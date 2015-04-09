@@ -176,9 +176,10 @@ class JapaneseWrapManager
       tokenizedLineClass.japaneseWrapManager = undefined
 
   # Japanese Wrap Column
-  # TODO: runaway if softWrapColumn = 0
   findJapaneseWrapColumn: (line, softWrapColumn) ->
-    return if softWrapColumn == 0
+    # for debug
+    # console.log("#{softWrapColumn}:#{line}")
+    return if !(softWrapColumn?) or softWrapColumn < 1
     size = 0
     for wrapColumn in [0...line.length]
       if @zeroWidthCharRegexp.test(line[wrapColumn])
