@@ -6,7 +6,7 @@ The following text is written in Japanese, because this package is made for Japa
 
 ## For Chinese and Korean users
 
-This package dose not correspond to the Chinese or the Korean. But if you may ignore the line breaking rule, it's useful. Please disable the setting "日本語禁則処理を行う" (to use the line breaking rule for the Japanese).
+This package does not correspond to the Chinese or the Korean. But if you may ignore the line breaking rule, it's useful. Please disable the setting "日本語禁則処理を行う" (to use the line breaking rule for the Japanese).
 
 # 日本語用ワードラップパッケージ
 このパッケージは日本語文章での、画面幅(または指定文字数)での改行処理を行うAtomのパッケージです。標準のSoft Wrap機能を上書きする形となり、改行の際には下記処理を行います。
