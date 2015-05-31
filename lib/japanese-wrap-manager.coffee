@@ -1,3 +1,4 @@
+{CompositeDisposable} = require 'atom'
 UnicodeUtil = require "./unicode-util"
 CharacterRegexpUtil = require "./character-regexp-util"
 
@@ -6,6 +7,7 @@ class JapaneseWrapManager
   @characterClasses = require "./character-classes"
 
   constructor: ->
+    @subscriptions = new CompositeDisposable
     @setupCharRegexp()
 
     configNameList = [
@@ -20,16 +22,13 @@ class JapaneseWrapManager
       'lineBreakingRule.ideographicSpaceAsWihteSpace',
     ]
     for name in configNameList
-      configName = 'japanese-wrap.' + name
-      atom.config.observe configName, (newValue) =>
-        @setupCharRegexp()
-    @lineBreakingRuleJapanese =
-        atom.config.get('japanese-wrap.lineBreakingRule.japanese')
-    atom.config.observe 'japanese-wrap.lineBreakingRule.japanese',
-        (newValue) =>
-          @lineBreakingRuleJapanese = newValue
+      configName = "japanese-wrap.#{name}"
+      @subscriptions.add atom.config.onDidChange configName, @setupCharRegexp
 
-  setupCharRegexp: ->
+    @subscriptions.add atom.config.observe 'japanese-wrap.lineBreakingRule.japanese', (newValue) =>
+      @lineBreakingRuleJapanese = newValue
+
+  setupCharRegexp: =>
     # debug
     #console.log("run setupCharRegexp")
     if atom.config.get('japanese-wrap.lineBreakingRule.ideographicSpaceAsWihteSpace')
@@ -45,7 +44,8 @@ class JapaneseWrapManager
 
     # word charater
     @wordCharRegexp = CharacterRegexpUtil.string2regexp(
-        JapaneseWrapManager.characterClasses["Western characters"])
+      JapaneseWrapManager.characterClasses["Western characters"]
+    )
 
     # Characters Not Starting a Line and Low Surrogate
     # TODO: add 濁音/半濁音
@@ -277,3 +277,6 @@ class JapaneseWrapManager
           cutable = true
           preWord = false
     return wrapColumn
+
+  destroy: =>
+    @subscriptions.dispose()
