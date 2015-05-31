@@ -1,3 +1,4 @@
+{CompositeDisposable} = require 'atom'
 JapaneseWrapManager = require './japanese-wrap-manager'
 
 module.exports =
@@ -52,13 +53,21 @@ module.exports =
 
   activate: (state) ->
     @japaneseWrapManager = new JapaneseWrapManager
-    atom.workspace.observeTextEditors (editor) =>
+
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.workspace.observeTextEditors (editor) =>
       @japaneseWrapManager.overwriteFindWrapColumn(editor.displayBuffer)
       # console.log("active japanese-wrap")
       # console.log(editor.displayBuffer)
 
   deactivate: ->
-    atom.workspace.observeTextEditors (editor) =>
-      @japaneseWrapManager.restoreFindWrapColumn(editor.displayBuffer)
+    @subscriptions?.dispose()
+    @subscriptions = null
+
+    for editor in atom.workspace.getTextEditors()
+      @japaneseWrapManager?.restoreFindWrapColumn(editor.displayBuffer)
       # console.log("deactive japanese-wrap")
       # console.log(editor.displayBuffer)
+
+    @japaneseWrapManager?.destroy()
+    @japaneseWrapManager = null
