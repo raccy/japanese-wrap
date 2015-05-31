@@ -33,12 +33,11 @@ And see also [atomicchar](https://atom.io/packages/atomicchar).
     * Soft Wrap
     * Soft Wrap At Preferred Line Length
 2. パッケージをインストールします。
-3. Atomの表示を再読み込みします。うまく反映されない場合は再起動してみてください。
 
 無効にする場合は、パッケージをDisabledにするか、Uninstallしてください。なお、標準のSoft Wrapが無効の場合は、ラップ機能は動作しませんので、ご注意ください。
 
 ## 動かないときは？
-本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。うまく動作しない場合は、最新へアップデートしてみてください。現バージョン(v0.2.8)はv0.204.0で確認し、新しい1.0 APIsとchorme 41に対応しています。
+本パッケージはAtomの非標準APIを使用しています。Atom本体は常に開発されているため、DisplayBufferのSoft Wrap周りが変更されると動かないことがあります。うまく動作しない場合は、最新へアップデートしてみてください。現バージョン(v0.2.9)はv0.204.0で確認し、新しい1.0 APIsとchorme 41に対応しています。
 
 ## その他
 本パッケージは等幅フォント専用です。プロポーショナルフォントを使いたい場合は、[atomicchar](https://atom.io/packages/atomicchar)を使ってみてください。

@@ -1,4 +1,7 @@
 Japanese only
+## 0.2.9 - 2015年5月31日
+* README.mdの修正。
+
 ## 0.2.8 - 2015年5月31日
 * Enable/Disableの動作部分の修正。
 
