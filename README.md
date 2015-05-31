@@ -10,11 +10,11 @@ Atom 1.0 roadmap includes a task to fix [atom/atom#1783](https://github.com/atom
 
 ## Monospace font only
 
-This package assumes the use of a monospace font. If you use proportional font, it is better to use [atomicchar](https://atom.io/packages/atomicchar) created by [@SaschaNaz](https://atom.io/users/SaschaNaz).
+This package assumes the use of monospace fonts. If you use proportional fonts, it is better to use [atomicchar](https://atom.io/packages/atomicchar) forked by this package.
 
 ## For Chinese and Korean users
 
-This package does not correspond to the Chinese or the Korean. But if you may ignore the line breaking rule, it's useful. Please disable the setting "日本語禁則処理を行う" (to use the line breaking rule for Japanese).
+This package does not correspond to Chinese or Korean. But if you may ignore the line breaking rule, it's useful. Please disable the setting "日本語禁則処理を行う" (to use the line breaking rule for Japanese).
 
 And see also [atomicchar](https://atom.io/packages/atomicchar).
 
