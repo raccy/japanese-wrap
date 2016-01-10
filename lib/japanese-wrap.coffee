@@ -52,15 +52,34 @@ module.exports =
           default: false
 
   activate: (state) ->
+    [major, minor, patch] = atom.getVersion().split('.').map((i) -> +i)
+    if (major == 1 and minor >= 2) or major >= 2
+      atom.notifications.addWarning 'The japanese-wrap is DEPRECATED. (japanese-wrap は廃止されました。)',
+        dismissable: true
+        detail: '''
+                The Atom has supported double-width characters, so the japanese-wrap is not necessary. \
+                It is no longer available. \
+                Please uninstall or dissable it.
+                Atom が2幅文字をサポートしたため、 japanese-wrap は不要になりました。\
+                このパッケージが今後動作することはありません。 \
+                アンインストールまたは無効にしてください。
+                '''
+      return
+
     @japaneseWrapManager = new JapaneseWrapManager
 
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.workspace.observeTextEditors (editor) =>
       @japaneseWrapManager.overwriteFindWrapColumn(editor.displayBuffer)
+
       # console.log("active japanese-wrap")
       # console.log(editor.displayBuffer)
 
   deactivate: ->
+    [major, minor, patch] = atom.getVersion().split('.').map((i) -> +i)
+    if (major == 1 and minor >= 2) or major >= 2
+      return
+
     @subscriptions?.dispose()
     @subscriptions = null
 
