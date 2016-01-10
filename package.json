@@ -2,11 +2,11 @@
   "name": "japanese-wrap",
   "main": "./lib/japanese-wrap",
   "version": "0.2.10",
-  "description": "Word wrap for Japanese text",
+  "description": "Word wrap for Japanese text for versions earlier than 1.2.0",
   "repository": "https://github.com/raccy/japanese-wrap",
   "license": "MIT",
   "engines": {
-    "atom": ">=0.189.0 <1.0.0"
+    "atom": ">=0.189.0 <1.2.0"
   },
   "dependencies": {}
 }
